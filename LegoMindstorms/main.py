@@ -12,16 +12,25 @@ from move import move
 ev3 = EV3Brick()
 
 # Initialize a motor at port B.
-test_motor = Motor(Port.B)
-mover = move(left_motor=Motor(Port.B), right_motor=Motor(Port.C))
+mover = move(left_motor=Motor(Port.B), right_motor=Motor(Port.C), ev3=ev3)
 mover.move_forwards()
+sleep(5)
 mover.turn_left_fast()
+sleep(5)
 mover.move_forwards()
+sleep(5)
 mover.turn_right_fast()
+sleep(5)
 mover.move_forwards()
+sleep(5)
+mover.move_backwards()
+sleep(5)    
 mover.turn_left_slow()
+sleep(5)
 mover.turn_right_slow()
-mover.move_forwards()
+sleep(5)
+mover.move_forwards()   
+sleep(5)
 
 # Write your program here
 
