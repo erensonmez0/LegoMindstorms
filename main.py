@@ -21,3 +21,11 @@ test_motor.run_target(500, 90)
 
 # Play another beep sound.
 ev3.speaker.beep(frequency=1000, duration=500)
+
+ev3.speaker.beep(frequency=392, duration=500)
+ev3.speaker.beep(frequency=392, duration=500)
+ev3.speaker.beep(frequency=440, duration=500)
+ev3.speaker.beep(frequency=392, duration=500)
+ev3.speaker.beep(frequency=523, duration=500)
+ev3.speaker.beep(frequency=494, duration=500)
+
