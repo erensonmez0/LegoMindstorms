@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import Motor, GyroSensor, ColorSensor
 from pybricks.parameters import Port
