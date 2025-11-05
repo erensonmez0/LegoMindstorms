@@ -1,31 +1,28 @@
-#!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import Motor
-from pybricks.parameters import Port
+from pybricks.ev3devices import Motor, GyroSensor, ColorSensor
+from pybricks.parameters import Port, Direction
+from pybricks.iodevices import Ev3devSensor
+from pybricks.robotics import DriveBase
+from time import sleep
+from line_follower import LineFollower
 
-# Create your objects here
-
-# Initialize the EV3 Brick.
+left_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE)
+right_motor = Motor(Port.B)
+gyro_sensor = GyroSensor(Port.S1)
+color_sensor = ColorSensor(Port.S2)
 ev3 = EV3Brick()
+wheel_diameter = 36   #Wheel Diameter
+axle_track = 120     #distance between wheels
+steering = 60 #turn speed in °/s
+overshoot = 5 
 
-# Initialize a motor at port B.
-test_motor = Motor(Port.B)
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
+line_follower = LineFollower(drive_base=drive_base, line_sensor=color_sensor, drive_speed=10, black=9, white=85, blue=60)
+line_follower.avoid_obstacle()
+drive_base.straight(500)
+drive_base.turn(180)
+drive_base.straight(500)
+drive_base.turn(-180)
 
-# Write your program here
 
-# Play a sound.
-ev3.speaker.beep()
-
-# Run the motor up to 500 degrees per second. To a target angle of 90 degrees.
-test_motor.run_target(500, 90)
-
-# Play another beep sound.
-ev3.speaker.beep(frequency=1000, duration=500)
-
-ev3.speaker.beep(frequency=392, duration=500)
-ev3.speaker.beep(frequency=392, duration=500)
-ev3.speaker.beep(frequency=440, duration=500)
-ev3.speaker.beep(frequency=392, duration=500)
-ev3.speaker.beep(frequency=523, duration=500)
-ev3.speaker.beep(frequency=494, duration=500)
 
