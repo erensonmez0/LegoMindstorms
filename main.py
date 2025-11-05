@@ -20,7 +20,12 @@ overshoot = 5
 drive_base = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
 """line_follower = LineFollower(drive_base=drive_baset line_sensor=color_sensor, drive_speed=10, black=9, white=85, blue=60)
 line_follower.avoid_obstacle()"""
-drive_base.turn(90)
+drive_base.straight(1000)
+drive_base.turn(-90)
+drive_base.straight(1000)
+drive_base.turn(-90)
+drive_base.straight(1000)
+drive_base.turn(-90)
 
 
 
