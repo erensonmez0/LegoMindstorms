@@ -1,12 +1,12 @@
+#!/usr/bin/env pybricks-micropython
+# ...existing code...
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import Motor
-from pybricks.parameters import Port
+from pybricks.parameters import Port, Direction
 from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
-from time import sleep
-from move import move
 
-left_motor = Motor(Port.C, Direction.COUNTERCLOCKWISE)
+left_motor = Motor(Port.C)
 right_motor = Motor(Port.B)
 ev3 = EV3Brick()
 wheel_diameter = 36  
