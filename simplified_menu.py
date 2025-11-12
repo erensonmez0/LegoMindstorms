@@ -2,11 +2,14 @@
 from pybricks.hubs import EV3Brick
 from pybricks.parameters import Button
 from pybricks.tools import wait
+from pybricks.media.ev3dev import Font
 
 ev3 = EV3Brick()
 
 # --- Enum substitute ---
 class Section:
+    SMALL = Font(size=10)  
+    ev3.screen.set_font(SMALL)
     LINE_FOLLOW, COLOR_FIELD, PUSH_CYLINDER, BRIDGE = range(4)
     ORDER = [LINE_FOLLOW, COLOR_FIELD, PUSH_CYLINDER, BRIDGE]
     NAMES = {
@@ -24,7 +27,11 @@ def wait_release():
 def draw_menu(idx):
     ev3.screen.clear()
     ev3.screen.print("Abschnitt waehlen:")
-    ev3.screen.print("> " + Section.NAMES[Section.ORDER[idx]])
+     # print every item; mark the selected one with ">"
+    for j, sec in enumerate(Section.ORDER):
+        mark = ">" if j == idx else " "
+        ev3.screen.print(f"{mark} {Section.NAMES[sec]}")
+        
     ev3.screen.print("")
     ev3.screen.print("Hoch/Runter: Auswahl")
     ev3.screen.print("Enter: Start | Back: Ende")
