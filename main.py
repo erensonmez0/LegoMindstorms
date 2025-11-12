@@ -17,13 +17,12 @@ axle_track = 160
 drive_base = DriveBase(left_motor, right_motor, wheel_diameter=33.25, axle_track=160)
 drive_base.settings(200, 200, 120, 120)
 
-color = ColorSensor(Port.S2)        # used for band detection
+color_sensor = ColorSensor(Port.S2)        # used for band detection
 #ultra = UltrasonicSensor(Port.S2)   # optional
-gyro  = GyroSensor(Port.S1)         # optional
+gyro_sensor  = GyroSensor(Port.S1)         # optional
 
 
-bridge = Bridge(drive_base=drive_base)
-bridge.run()
-
+line_follower = LineFollower(drive_base=drive_base, color_sensor= color_sensor)
+line_follower.run()
 
                     
