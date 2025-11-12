@@ -11,7 +11,7 @@ from pybricks.tools import wait
 ev3 = EV3Brick()
 left_motor  = Motor(Port.B)   # adjust to your wiring
 right_motor = Motor(Port.C)
-robot = DriveBase(left_motor, right_motor, wheel_diameter=56, axle_track=152)
+robot = DriveBase(left_motor, right_motor, wheel_diameter=33.25, axle_track=160)
 robot.settings(200, 200, 120, 120)
 
 color = ColorSensor(Port.S1)        # used for band detection
