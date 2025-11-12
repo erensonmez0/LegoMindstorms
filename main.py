@@ -1,36 +1,29 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import Motor, GyroSensor, ColorSensor
+from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor
 from pybricks.parameters import Port, Direction
 from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
 from time import sleep
 from line_follower import LineFollower
+from bridge import Bridge
 
-left_motor = Motor(Port.B)
-right_motor = Motor(Port.C)
-"""gyro_sensor = GyroSensor(Port.S1)
-color_sensor = ColorSensor(Port.S2)"""
+# ---------------------- Hardware setup ----------------------
 ev3 = EV3Brick()
-wheel_diameter = 33.25   #Wheel Diameter
-axle_track = 160   #distance between wheels
-steering = 60 #turn speed in °/s
-overshoot = 5 
+left_motor  = Motor(Port.B)   # adjust to your wiring
+right_motor = Motor(Port.C)
+wheel_diameter = 33.25
+axle_track = 160
+drive_base = DriveBase(left_motor, right_motor, wheel_diameter=33.25, axle_track=160)
+drive_base.settings(200, 200, 120, 120)
 
-drive_base = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
-"""line_follower = LineFollower(drive_base=drive_baset line_sensor=color_sensor, drive_speed=10, black=9, white=85, blue=60)
-line_follower.avoid_obstacle()"""
-drive_base.straight(1000)
-drive_base.turn(-90)
-drive_base.straight(1000)
-drive_base.turn(-90)
-drive_base.straight(1000)
-drive_base.turn(-90)
+color = ColorSensor(Port.S2)        # used for band detection
+#ultra = UltrasonicSensor(Port.S2)   # optional
+gyro  = GyroSensor(Port.S1)         # optional
 
 
-
-
-""""""
+bridge = Bridge(drive_base=drive_base)
+bridge.run()
 
 
                     

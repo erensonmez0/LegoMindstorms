@@ -40,7 +40,7 @@ def menu_select(initial=0):
             i = (i - 1) % len(Section.ORDER); wait_release()
         elif Button.RIGHT in b:
             i = (i + 1) % len(Section.ORDER); wait_release()
-        elif Button.BACKSPACE in b:   # Start chosen section
+        elif Button.BEACON in b:   # Start chosen section
             wait_release(); return Section.ORDER[i]
         elif Button.CENTER in b:      # Enter in menu = end program
             wait_release(); return None
