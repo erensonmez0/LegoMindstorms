@@ -26,8 +26,8 @@ def draw_menu(idx):
     ev3.screen.print("Abschnitt waehlen:")
     ev3.screen.print("> " + Section.NAMES[Section.ORDER[idx]])
     ev3.screen.print("")
-    ev3.screen.print("Links/Rechts: Auswahl")
-    ev3.screen.print("Back: Start  | Enter: Ende")
+    ev3.screen.print("Hoch/Runter: Auswahl")
+    ev3.screen.print("Enter: Start | Back: Ende")
 
 def menu_select(initial=0):
     i = initial
@@ -36,13 +36,13 @@ def menu_select(initial=0):
         draw_menu(i)
         wait(120)
         b = ev3.buttons.pressed()
-        if Button.LEFT in b:
+        if Button.UP in b:
             i = (i - 1) % len(Section.ORDER); wait_release()
-        elif Button.RIGHT in b:
+        elif Button.DOWN in b:
             i = (i + 1) % len(Section.ORDER); wait_release()
-        elif Button.BACKSPACE in b:   # Start chosen section
+        elif Button.CENTER in b:   # Start chosen section
             wait_release(); return Section.ORDER[i]
-        elif Button.CENTER in b:      # Enter in menu = end program
+        elif Button.BACKSPACE in b:      # Enter in menu = end program
             wait_release(); return None
 
 # --- Section stub (for testing) ---
@@ -51,7 +51,7 @@ def run_section(sec):
     ev3.screen.print("Abschnitt:")
     ev3.screen.print(Section.NAMES[sec])
     ev3.screen.print("")
-    ev3.screen.print("Enter: Zurueck zum Menu")
+    ev3.screen.print("Enter: Menu")
     # Wait until ENTER pressed -> back to menu
     while True:
         wait(80)
@@ -60,6 +60,7 @@ def run_section(sec):
             return  # return to menu
 
 # --- Main loop ---
+
 def main():
     current = menu_select(0)
     if current is None:
