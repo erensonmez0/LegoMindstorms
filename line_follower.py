@@ -4,12 +4,12 @@ from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor
 from pybricks.parameters import Port
 from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
-from time import sleep
+import time
 
 class LineFollower:
-    BLACK = 9
-    WHITE = 85
-    BLUE = 15
+    BLACK = 8
+    WHITE = 42
+    BLUE = 6
     THRESHOLD = (BLACK+WHITE)/2
     PROPORTIONAL_GAIN =1.2
     DRIVE_SPEED = 100
@@ -38,46 +38,54 @@ class LineFollower:
                 turn_rate = self.PROPORTIONAL_GAIN * deviation
 
                 # Set the drive base speed and turn rate.
-                self.drive_base.drive(self.DRIVE_SPEED, turn_rate)
+                self.drive_base.drive(self.DRIVE_SPEED, int(turn_rate))
+                                      
 
                 # You can wait for a short time or do other things in this loop.
-                sleep(0.2)
+                time.sleep(0.2)
 
             # ROBOT not on line -> search until we find it again (poll sensor each loop)
             else:
-                attempts = 0
-                max_attempts = 20  # prevent infinite searching
-                while attempts < max_attempts:
-                    # update current light reading
-                    light = self.color_sensor.reflection()
-                    if light >= self.THRESHOLD:
-                        break  # found the line, exit search immediately
-
-                    # small forward step, then check again
-                    self.drive_base.straight(50)
-                    sleep(0.2)
-                    if self.color_sensor.reflection() >= self.THRESHOLD:
-                        break
-
-                    # do a short scan: turn slightly left, then right, checking each time
-                    self.drive_base.turn(15)
-                    sleep(0.1)
-                    if self.color_sensor.reflection() >= self.THRESHOLD:
-                        break
-
-                    self.drive_base.turn(-30)
-                    sleep(0.1)
-                    if self.color_sensor.reflection() >= self.THRESHOLD:
-                        break
-
-                    # return roughly to center
-                    self.drive_base.turn(15)
-
-                    attempts += 1
-                    EV3Brick().screen.print(attempts)
-
-                # stop motion when search finishes (either found or max attempts reached)
+                # Try scanning to the right first, then to the left if not found.
+                self.drive_base.straight(100)
+                found = self.scan_turn_until_line(turn_rate=60, debounce=1, timeout_s=.0)
+                if not found:
+                    found = self.scan_turn_until_line(turn_rate=-60, debounce=1, timeout_s=3.0)
+                # ensure we stop motion (scan_turn_until_line stops on success or timeout)
                 self.drive_base.drive(0, 0)
+
+    def scan_turn_until_line(self, turn_rate: int = 60, debounce: int = 1, timeout_s: float = 5.0) -> bool:
+        """Rotate in place and poll the color sensor until the line is found.
+
+        Returns True if the line was found, False on timeout.
+        debounce: number of consecutive positive reads required to accept the line (helps filter noise)
+        """
+        start = time.time()
+        good_reads = 0
+
+        # start rotation in place
+        self.drive_base.drive(0, turn_rate)
+
+        try:
+            while True:
+                # safety timeout
+                if time.time() - start > timeout_s:
+                    return False
+
+                light = self.color_sensor.reflection()
+                if light >= self.THRESHOLD:
+                    good_reads += 1
+                else:
+                    good_reads = 0
+
+                if good_reads >= debounce:
+                    return True
+
+                # small delay to let sensor update
+                time.sleep(0.04)
+        finally:
+            # stop motion immediately
+            self.drive_base.drive(0, 0)
         
     def avoid_obstacle(self):
         self.drive_base.drive(10,60)
