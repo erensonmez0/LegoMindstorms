@@ -9,6 +9,8 @@ from line_follower import LineFollower
 from bridge import Bridge
 from time import sleep
 
+from p_regler import PRegler
+
 # ---------------------- Hardware setup ----------------------
 ev3 = EV3Brick()
 left_motor  = Motor(Port.B)   # adjust to your wiring
@@ -38,5 +40,10 @@ sleep(1.8)
 
 """line_follower = LineFollower(drive_base=drive_base, color_sensor= color_sensor)
 line_follower.run()"""
+
+
+# pregler = PRegler(drive_base=drive_base, color_sensor= color_sensor)
+# pregler.run()
+
 
                     
