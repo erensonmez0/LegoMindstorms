@@ -1,6 +1,6 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor
+from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor, TouchSensor
 from pybricks.parameters import Port, Direction
 from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
@@ -21,9 +21,10 @@ axle_track = 160
 drive_base = DriveBase(left_motor, right_motor, wheel_diameter=33.25, axle_track=160)
 drive_base.settings(200, 200, 120, 120)
 
-color_sensor = ColorSensor(Port.S2)        # used for band detection
-#ultra = UltrasonicSensor(Port.S2)   # optional
-gyro_sensor  = GyroSensor(Port.S1)    
+color_sensor = ColorSensor(Port.S2)                     # used for band detection
+#ultrasonic_sensor = UltrasonicSensor(Port.S2)           # used for obstacle detection
+gyro_sensor  = GyroSensor(Port.S1)                      # used for navigation via drive_base
+# touche_sensor = TouchSensor(Port.S3)                   # used for wall alignment?
 
 
 motor.run(300)
@@ -35,11 +36,11 @@ sleep(1.8)
 
 
 
-"""Bridge(drive_base).run()   """  # optional
+# Bridge(drive_base).run()
 
 
-"""line_follower = LineFollower(drive_base=drive_base, color_sensor= color_sensor)
-line_follower.run()"""
+# line_follower = LineFollower(drive_base=drive_base, color_sensor= color_sensor)
+# line_follower.run()
 
 
 # pregler = PRegler(drive_base=drive_base, color_sensor= color_sensor)

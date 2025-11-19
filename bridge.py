@@ -11,6 +11,9 @@ class Bridge:
         self.drive_base = drive_base
 
     def run(self):
+
+        # TODO alignment with bridge start.
+
         self.drive_base.straight(self.RAMP_UP)
         self.drive_base.turn(self.TURN)
         self.drive_base.straight(self.BRIDGE_LENGTH)
