@@ -14,7 +14,7 @@ class LineFollower:
     BLUE = 6
     THRESHOLD = (BLACK+WHITE)/2
     PHRESHOLD = (BLACK+WHITE)/3
-    PROPORTIONAL_GAIN = 1.6
+    PROPORTIONAL_GAIN = 1.7
     DRIVE_SPEED = 60
     INDEX = 0
 
@@ -69,9 +69,9 @@ class LineFollower:
         Returns True if the line was found, False on timeout.
         debounce: number of consecutive positive reads required to accept the line (helps filter noise)
         """
-        for i in range(15):
+        for i in range(10):
             self.INDEX = (self.INDEX + 1)%2
-            self.drive_base.turn(angle=angle/15)
+            self.drive_base.turn(angle=angle/10)
             if self.color_sensor.reflection() >= self.THRESHOLD:
                 return True
         self.drive_base.turn(-angle)
