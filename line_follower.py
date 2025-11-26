@@ -20,7 +20,7 @@ class LineFollower:
 
     
 
-    def __init__(self, drive_base:DriveBase, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor|None=None):
+    def __init__(self, drive_base:DriveBase, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor):
         self.drive_base = drive_base
         self.color_sensor = color_sensor
         self.ultrasonic_sensor = ultrasonic_sensor
@@ -55,7 +55,8 @@ class LineFollower:
                                       
 
                 # You can wait for a short time or do other things in this loop.
-                time.sleep(0.1)
+                if self.ultrasonic_sensor.distance() <= 100:
+                    self.avoid_obstacle()
 
             # ROBOT not on line -> search until we find it again (poll sensor each loop)
             else:
@@ -79,8 +80,14 @@ class LineFollower:
         
     def avoid_obstacle(self):
         #TODO implement this  :D
-        self.drive_base.drive(10,60)
-        self.drive_base.drive(10,-60)
+        self.drive_base.turn(90)
+        self.drive_base.straight(200)
+        self.drive_base.turn(-90)
+        self.drive_base.straight(200)
+        self.drive_base.turn(-90)
+        self.drive_base.straight(200)
+        self.drive_base.turn(90)
+
 
     def search_line(self):
         for i in range(5):
