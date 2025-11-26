@@ -22,7 +22,7 @@ class Bridge:
         self.touch_sensor = touche_sensor
 
 
-
+    # TODO auslagern in extra util class
     def align_start(self):
         self.drive_base.straight(-150)
         self.drive_base.turn(self.TURN_RIGHT)
