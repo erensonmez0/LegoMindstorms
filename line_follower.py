@@ -5,6 +5,7 @@ from pybricks.parameters import Port
 from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
 from pybricks.tools import DataLog, StopWatch, wait
+
 import time
 
 class LineFollower:
@@ -12,18 +13,17 @@ class LineFollower:
     WHITE = 42
     BLUE = 6
     THRESHOLD = (BLACK+WHITE)/2
-    PROPORTIONAL_GAIN = 1
-    DRIVE_SPEED = 50
-    TURNS = [90, -180, -90, 180]
+    PHRESHOLD = (BLACK+WHITE)/3
+    PROPORTIONAL_GAIN = 1.7
+    DRIVE_SPEED = 60
     INDEX = 0
 
     
 
-    def __init__(self, drive_base:DriveBase, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor|None=None):
+    def __init__(self, drive_base:DriveBase, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor):
         self.drive_base = drive_base
         self.color_sensor = color_sensor
         self.ultrasonic_sensor = ultrasonic_sensor
-        self.data = DataLog('time', 'reflection')
         self.watch = StopWatch()
 
    
@@ -33,7 +33,6 @@ class LineFollower:
         EV3Brick().screen.print("light:", light)
         EV3Brick().screen.print("th:", self.THRESHOLD)
         
-        self.data.log(self.watch.time(), light)
         # Start following the line endlessly.
         while True:
 
@@ -41,10 +40,9 @@ class LineFollower:
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
             
             # ROBOT on line
-            if light >= self.BLACK:
+            if light > self.PHRESHOLD:
                 
 
-                self.data.log(self.watch.time(), self.color_sensor.reflection())
                 
                 # Calculate the deviation from the threshold.
                 deviation = light - self.THRESHOLD
@@ -57,12 +55,12 @@ class LineFollower:
                                       
 
                 # You can wait for a short time or do other things in this loop.
-                time.sleep(0.1)
+                if self.ultrasonic_sensor.distance() <= 100:
+                    self.avoid_obstacle()
 
             # ROBOT not on line -> search until we find it again (poll sensor each loop)
             else:
                 EV3Brick().speaker.beep(800,6)
-                # Try scanning to the right first, then to the left if not found.
                 self.search_line()
 
     def scan_turn_until_line(self, angle = 90) -> bool:
@@ -71,11 +69,9 @@ class LineFollower:
         Returns True if the line was found, False on timeout.
         debounce: number of consecutive positive reads required to accept the line (helps filter noise)
         """
-        
-        turn_angle = angle/15
-        for i in range(15):
-            self.drive_base.turn(turn_angle)
-            self.data.log(self.watch.time(), self.color_sensor.reflection())
+        for i in range(10):
+            self.INDEX = (self.INDEX + 1)%2
+            self.drive_base.turn(angle=angle/10)
             if self.color_sensor.reflection() >= self.THRESHOLD:
                 return True
         self.drive_base.turn(-angle)
@@ -84,19 +80,25 @@ class LineFollower:
         
     def avoid_obstacle(self):
         #TODO implement this  :D
-        self.drive_base.drive(10,60)
-        self.drive_base.drive(10,-60)
+        self.drive_base.turn(90)
+        self.drive_base.straight(200)
+        self.drive_base.turn(-90)
+        self.drive_base.straight(200)
+        self.drive_base.turn(-90)
+        self.drive_base.straight(200)
+        self.drive_base.turn(90)
+
 
     def search_line(self):
         for i in range(5):
-            if self.scan_turn_until_line(self.TURNS[self.INDEX]):
+            if self.scan_turn_until_line(90):
+                
                 return
-            elif self.scan_turn_until_line(self.TURNS[self.INDEX]):
+            elif self.scan_turn_until_line(-90):
                 return
                         
             self.drive_base.straight(200)
-            self.data.log(self.watch.time(), self.color_sensor.reflection())
-            if self.color_sensor.reflection()>=self.THRESHOLD:
+            if self.color_sensor.reflection()>self.THRESHOLD:
                 return
 
 
