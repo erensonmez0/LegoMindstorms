@@ -5,6 +5,7 @@ from pybricks.parameters import Port
 from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
 from pybricks.tools import DataLog, StopWatch, wait
+from precision_module import PrecisionModule
 
 import time
 
@@ -14,9 +15,10 @@ class LineFollower:
     BLUE = 6
     THRESHOLD = (BLACK+WHITE)/2
     PHRESHOLD = (BLACK+WHITE)/3
-    PROPORTIONAL_GAIN = 1.7
-    DRIVE_SPEED = 60
+    PROPORTIONAL_GAIN = 1.8
+    DRIVE_SPEED = 70
     INDEX = 0
+    
 
     
 
@@ -25,13 +27,13 @@ class LineFollower:
         self.color_sensor = color_sensor
         self.ultrasonic_sensor = ultrasonic_sensor
         self.watch = StopWatch()
+        
 
    
     def run(self):
         light = self.color_sensor.reflection()
         EV3Brick().screen.clear()
-        EV3Brick().screen.print("light:", light)
-        EV3Brick().screen.print("th:", self.THRESHOLD)
+        
         
         # Start following the line endlessly.
         while True:
@@ -40,8 +42,7 @@ class LineFollower:
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
             
             # ROBOT on line
-            if light > self.PHRESHOLD:
-                
+            if light > self.PHRESHOLD:               
 
                 
                 # Calculate the deviation from the threshold.
@@ -51,11 +52,12 @@ class LineFollower:
                 turn_rate = self.PROPORTIONAL_GAIN * deviation
 
                 # Set the drive base speed and turn rate.
-                self.drive_base.drive(self.DRIVE_SPEED, int(turn_rate))
+                self.drive_base.drive(self.DRIVE_SPEED, turn_rate)
+                self.DRIVE_SPEED += 1
                                       
 
                 # You can wait for a short time or do other things in this loop.
-                if self.ultrasonic_sensor.distance() <= 100:
+                if self.ultrasonic_sensor.distance() <= 90:
                     self.avoid_obstacle()
 
             # ROBOT not on line -> search until we find it again (poll sensor each loop)
@@ -69,9 +71,8 @@ class LineFollower:
         Returns True if the line was found, False on timeout.
         debounce: number of consecutive positive reads required to accept the line (helps filter noise)
         """
-        for i in range(10):
-            self.INDEX = (self.INDEX + 1)%2
-            self.drive_base.turn(angle=angle/10)
+        for i in range(9):
+            self.drive_base.turn(angle=angle/9)
             if self.color_sensor.reflection() >= self.THRESHOLD:
                 return True
         self.drive_base.turn(-angle)
@@ -80,25 +81,28 @@ class LineFollower:
         
     def avoid_obstacle(self):
         #TODO implement this  :D
-        self.drive_base.turn(90)
-        self.drive_base.straight(200)
-        self.drive_base.turn(-90)
-        self.drive_base.straight(200)
-        self.drive_base.turn(-90)
-        self.drive_base.straight(200)
-        self.drive_base.turn(90)
+        self.drive_base.turn(80)
+        self.drive_base.straight(150)
+        self.drive_base.turn(-80)
+        self.drive_base.straight(400)
+        self.drive_base.turn(-80)
+        self.drive_base.straight(150)
+        self.drive_base.turn(80)
+
 
 
     def search_line(self):
+        self.DRIVE_SPEED=1
         for i in range(5):
-            if self.scan_turn_until_line(90):
-                
+            if self.scan_turn_until_line(-90):
+                self.drive_base.drive(0, 0)
                 return
-            elif self.scan_turn_until_line(-90):
+            elif self.scan_turn_until_line(90):
+                self.drive_base.drive(0, 0)
                 return
                         
-            self.drive_base.straight(200)
-            if self.color_sensor.reflection()>self.THRESHOLD:
+            self.drive_base.straight(100)
+            if self.color_sensor.reflection()>self.PHRESHOLD:
                 return
 
 
