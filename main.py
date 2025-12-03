@@ -8,6 +8,7 @@ from pybricks.robotics import DriveBase
 # from pybricks.robotics import GyroDriveBase
 from time import sleep
 
+from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
 from line_follower import LineFollower
 from bridge import Bridge
@@ -29,6 +30,12 @@ straight_speed = 100
 straight_acceleration = 100
 turn_rate = 120
 turn_acceleration = 120
+
+# rgb-color values
+WHITE = (23, 52, 39)
+BROWN = (1, 7, 0)
+BLUE = (1, 19, 17)
+RED = (6, 4, 0)
 
 drive_base.settings(straight_speed, straight_acceleration, turn_rate, turn_acceleration)
 
@@ -58,7 +65,9 @@ precision_module = PrecisionModule(
 
 bridge = Bridge(precision_module, touche_sensor, color_sensor)
 
-bridge.align_start()
+# bridge.run()
+
+# MindsStormUtil.drive_forwards_till_color(precision_module, color_sensor, 2, 300)
 
 
 
