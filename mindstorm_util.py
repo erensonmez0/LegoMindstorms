@@ -38,12 +38,14 @@ class MindsStormUtil:
         :param max_mm: Maximal amount of mm before aborting and returning false
         :return: Returns true if color was found, false if max_cm was reached
         """
-        ALIGN_FORWARDS = 1  # half a cm
+        ALIGN_FORWARDS = 1
         max_counter = max_mm / ALIGN_FORWARDS
         while True:
-            if (((color_sensor.rgb()[0] - color_value[0]) < 4)
-                    and ((color_sensor.rgb()[1] - color_value[1]) < 4)
-                    and ((color_sensor.rgb()[2] - color_value[2]) < 4)):
+            # print(color_sensor.rgb())
+            # print(color_value)
+            if ((-4 < (color_sensor.rgb()[0] - color_value[0]) < 4)
+                    and (-4 < (color_sensor.rgb()[1] - color_value[1]) < 4)
+                    and (-4 < (color_sensor.rgb()[2] - color_value[2]) < 4)):
                 return True
             if max_counter <= 0:
                 return False

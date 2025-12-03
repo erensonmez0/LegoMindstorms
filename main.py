@@ -11,7 +11,6 @@ from time import sleep
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
 from line_follower import LineFollower
-from bridge import Bridge
 from time import sleep
 
 from precision_module import PrecisionModule
@@ -34,7 +33,7 @@ turn_acceleration = 120
 # rgb-color values
 WHITE = (23, 52, 39)
 BROWN = (1, 7, 0)
-BLUE = (1, 19, 17)
+BLUE = (2, 17, 17)
 RED = (6, 4, 0)
 
 drive_base.settings(straight_speed, straight_acceleration, turn_rate, turn_acceleration)
@@ -63,11 +62,11 @@ precision_module = PrecisionModule(
 # sleep(5)
 # precision_module.straight_gyro(-2000)
 
-bridge = Bridge(precision_module, touche_sensor, color_sensor)
+# bridge = Bridge(precision_module, touche_sensor, color_sensor)
 
 # bridge.run()
 
-# MindsStormUtil.drive_forwards_till_color(precision_module, color_sensor, 2, 300)
+MindsStormUtil.drive_forwards_till_color(precision_module, color_sensor, BLUE, 300)
 
 
 
@@ -82,7 +81,10 @@ bridge = Bridge(precision_module, touche_sensor, color_sensor)
 #   - farbfinden
 #   - pringler
 #
-#
+
+# TODO Cornelius
+#   - combine straight_gyro with abort condition (e.g. color_sensor, touche_sensor -> bool expression)
+#   -
 
 
                     
