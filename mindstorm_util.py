@@ -16,15 +16,15 @@ class MindsStormUtil:
         :param max_mm: Maximal amount of mm before aborting and returning false (accurate to 5mm)
         :return: Returns true if wall was reached, false if max_cm was reached
         """
-        ALIGN_BACKWARDS = -5                  # half a cm
-        max_counter = max_mm / ALIGN_BACKWARDS
+        ALIGN_BACKWARDS = -1                  # half a cm
+        max_counter = max_mm / -ALIGN_BACKWARDS
         while True:
             if touch_sensor.pressed():
                 return True
             if max_counter <= 0:
                 return False
             precision_module.straight_gyro(ALIGN_BACKWARDS)
-            sleep(0.1)
+            sleep(0.5)
             max_counter = max_counter - 1
 
 
@@ -38,15 +38,16 @@ class MindsStormUtil:
         :param max_mm: Maximal amount of mm before aborting and returning false (accurate to 5mm)
         :return: Returns true if color was found, false if max_cm was reached
         """
-        ALIGN_FORWARDS = 5  # half a cm
+        ALIGN_FORWARDS = 1  # half a cm
         max_counter = max_mm / ALIGN_FORWARDS
         while True:
-            if color_sensor.reflection() - color_value:
+            print(color_sensor.reflection() - color_value)
+            if (color_sensor.reflection() - color_value) < 4:
                 return True
             if max_counter <= 0:
                 return False
             precision_module.straight_gyro(ALIGN_FORWARDS)
-            sleep(0.1)
+            sleep(0.5)
             max_counter = max_counter - 1
 
 
