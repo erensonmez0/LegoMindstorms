@@ -1,8 +1,7 @@
-from pybricks.ev3devices import TouchSensor
-from pybricks.robotics import DriveBase
-from time import sleep
+from pybricks.ev3devices import TouchSensor, ColorSensor
 
-
+from mindstorm_util import MindsStormUtil
+from precision_module import PrecisionModule
 
 
 class Bridge:
@@ -12,46 +11,44 @@ class Bridge:
     BRIDGE_LENGTH = 1250
     RAMP_DOWN = 1000
 
-    ALIGN = -15
     DISTANCE_TO_BRIDGE_START = 280
+
+    BLUE = 6
 
 
      
-    def __init__(self, drive_base:DriveBase, touche_sensor:TouchSensor):
-        self.drive_base = drive_base
+    def __init__(self, precision_module:PrecisionModule, touche_sensor:TouchSensor, color_sensor:ColorSensor):
+        self.precision_module = precision_module
         self.touch_sensor = touche_sensor
+        self.color_sensor = color_sensor
 
 
-    # TODO auslagern in extra util class
     def align_start(self):
-        self.drive_base.straight(-150)
-        self.drive_base.turn(self.TURN_RIGHT)
-        self.drive_base.straight(- (self.DISTANCE_TO_BRIDGE_START - 50))
+        self.precision_module.straight_gyro(-200)
+        self.precision_module.turn_gyro(self.TURN_RIGHT)
+        self.precision_module.straight_gyro(- (self.DISTANCE_TO_BRIDGE_START - 50))
 
-        # drive backwards until touching the wall or max_counter of cm
-        max_counter = 20
-        while (not self.touch_sensor.pressed()) or (max_counter <= 0):
-            self.drive_base.straight(self.ALIGN)
-            sleep(1)
-            max_counter = max_counter - 1
+
+        MindsStormUtil.drive_backwards_till_wall(self.precision_module, self.touch_sensor, 70)
 
         # drive to startpoint of ramp
-        self.drive_base.straight(self.DISTANCE_TO_BRIDGE_START)
-        self.drive_base.turn(self.TURN_LEFT)
+        self.precision_module.straight_gyro(self.DISTANCE_TO_BRIDGE_START)
+        self.precision_module.turn_gyro(self.TURN_LEFT)
+
+        MindsStormUtil.drive_forwards_till_color(self.precision_module, self.color_sensor, self.BLUE, 50)
 
 
         
     def drive_bridge(self):
-        self.drive_base.straight(self.RAMP_UP)
-        self.drive_base.turn(self.TURN_LEFT)
-        self.drive_base.straight(self.BRIDGE_LENGTH)
-        self.drive_base.turn(self.TURN_LEFT)
-        self.drive_base.straight(self.RAMP_DOWN)
+        self.precision_module.straight_gyro(self.RAMP_UP)
+        self.precision_module.turn_gyro(self.TURN_LEFT)
+        self.precision_module.straight_gyro(self.BRIDGE_LENGTH)
+        self.precision_module.turn_gyro(self.TURN_LEFT)
+        self.precision_module.straight_gyro(self.RAMP_DOWN)
 
     def run(self):
-        # TODO bridge ablauf
         self.align_start()
-        # self.drive_bridge()
+        self.drive_bridge()
 
 
 

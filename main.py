@@ -13,7 +13,6 @@ from line_follower import LineFollower
 from bridge import Bridge
 from time import sleep
 
-from p_regler import PRegler
 from precision_module import PrecisionModule
 
 # ---------------------- Hardware setup ----------------------
@@ -38,8 +37,6 @@ ultrasonic_sensor = UltrasonicSensor(Port.S4)           # used for obstacle dete
 gyro_sensor  = GyroSensor(Port.S1)                      # used for navigation via drive_base
 touche_sensor = TouchSensor(Port.S3)                   # used for wall alignment?
 
-
-
 precision_module = PrecisionModule(
     left_motor,
     right_motor,
@@ -49,13 +46,19 @@ precision_module = PrecisionModule(
     turn_rate,
     turn_acceleration,
     gyro_sensor)
-precision_module.straight_gyro(2000)
-sleep(5)
-precision_module.turn_gyro(360)
-sleep(5)
-precision_module.turn_gyro(-360)
-sleep(5)
-precision_module.straight_gyro(-2000)
+
+
+# precision_module.straight_gyro(2000)
+# sleep(5)
+# precision_module.turn_gyro(360)
+# sleep(5)
+# precision_module.turn_gyro(-360)
+# sleep(5)
+# precision_module.straight_gyro(-2000)
+
+bridge = Bridge(precision_module, touche_sensor, color_sensor)
+
+bridge.align_start()
 
 
 
