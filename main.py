@@ -73,8 +73,7 @@ bridge = Bridge(precision_module, touche_sensor, color_sensor)
 
 
 # TODO
-#   - refactoring
-#   - utils class
+#   - precision_module testen
 #   - menu einbinden
 #   - kalibrieren (gewicht verschieben?)
 #   - brücke
