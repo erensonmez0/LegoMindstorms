@@ -11,8 +11,6 @@ class PrecisionModule:
             self,
             left_motor: Motor,
             right_motor: Motor,
-            # wheel_diameter: Number,
-            # axle_track: Number,
             drive_base: DriveBase,
             straight_speed,
             straight_acceleration,
@@ -36,8 +34,6 @@ class PrecisionModule:
         """
         self.left_motor = left_motor
         self.right_motor = right_motor
-        # self.wheel_diameter = wheel_diameter
-        # self.axle_track = axle_track
         self.drive_base = drive_base
         self.straight_speed = straight_speed
         self.straight_acceleration = straight_acceleration
@@ -47,6 +43,7 @@ class PrecisionModule:
 
 
 
+# TODO find good values for sleep.
 
     def straight_gyro(
             self, distance: int
@@ -66,16 +63,14 @@ class PrecisionModule:
         self.gyro_sensor.reset_angle(0)
 
         PROPORTIONAL_GAIN = 1.1
-        if distance < 0:  # move backwards
+        if distance < 0:                        # move backwards
             while self.drive_base.distance() > distance:
-                # print(self.gyro_sensor.angle())
                 reverseSpeed = -1 * robotSpeed
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(reverseSpeed, angle_correction)
                 sleep(0.1)
-        elif distance > 0:  # move forwards
+        elif distance > 0:                      # move forwards
             while self.drive_base.distance() < distance:
-                # print(self.gyro_sensor.angle())
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(robotSpeed, angle_correction)
                 sleep(0.1)
@@ -94,26 +89,19 @@ class PrecisionModule:
         Arguments:
             angle (Number, deg): Angle of the turn.
         """
-        # speed = 150  # mm/s
         speed = self.turn_rate
 
         self.gyro_sensor.reset_angle(0)
         if angle < 0:
             while self.gyro_sensor.angle() > angle:
-                # print(self.gyro_sensor.angle())
                 self.right_motor.run(speed=(-1 * speed))
                 self.left_motor.run(speed=speed)
-                # wait(10)
                 sleep(0.1)
         elif angle > 0:
             while self.gyro_sensor.angle() < angle:
-                # print(self.gyro_sensor.angle())
                 self.right_motor.run(speed=speed)
                 self.left_motor.run(speed=(-1 * speed))
-                # wait(10)
                 sleep(0.1)
-        # else:
-            # print("Error: no angle chosen")
 
         self.right_motor.brake()
         self.left_motor.brake()

@@ -13,7 +13,6 @@ from line_follower import LineFollower
 from bridge import Bridge
 from time import sleep
 
-from p_regler import PRegler
 from precision_module import PrecisionModule
 
 # ---------------------- Hardware setup ----------------------
