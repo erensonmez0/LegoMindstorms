@@ -75,10 +75,12 @@ bridge = Bridge(precision_module, touche_sensor, color_sensor)
 # TODO
 #   - precision_module testen
 #   - menu einbinden
-#   - kalibrieren (gewicht verschieben?)
+#   - neu kalibrieren (gewicht verschieben?)
+#   - greifarm aktuieren
 #   - brücke
 #   - linien folgen
 #   - farbfinden
+#   - pringler
 #
 #
 
