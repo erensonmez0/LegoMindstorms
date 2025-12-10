@@ -1,19 +1,13 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks.hubs import EV3Brick
-
 from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor, TouchSensor
-from pybricks.parameters import Port, Direction
-from pybricks.iodevices import Ev3devSensor
+from pybricks.hubs import EV3Brick
+from pybricks.parameters import Port
 from pybricks.robotics import DriveBase
-# from pybricks.robotics import GyroDriveBase
-from time import sleep
 
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
-from line_follower import LineFollower
-from time import sleep
 
-from precision_module import PrecisionModule
+# from pybricks.robotics import GyroDriveBase
 
 # ---------------------- Hardware setup ----------------------
 ev3 = EV3Brick()
@@ -41,7 +35,7 @@ drive_base.settings(straight_speed, straight_acceleration, turn_rate, turn_accel
 color_sensor = ColorSensor(Port.S2)                     # used for band detection
 ultrasonic_sensor = UltrasonicSensor(Port.S4)           # used for obstacle detection
 gyro_sensor  = GyroSensor(Port.S1)                      # used for navigation via drive_base
-touche_sensor = TouchSensor(Port.S3)                   # used for wall alignment?
+touch_sensor = TouchSensor(Port.S3)                   # used for wall alignment?
 
 precision_module = PrecisionModule(
     left_motor,
@@ -66,8 +60,13 @@ precision_module = PrecisionModule(
 
 # bridge.run()
 
-MindsStormUtil.drive_forwards_till_color(precision_module, color_sensor, BLUE, 300)
+# MindsStormUtil.drive_forwards_till_color(precision_module, color_sensor, BLUE, 300)
 
+
+
+# precision_module.straight_gyro_with_condition(-500, (lambda: MindsStormUtil.tempBool(touche_sensor)))
+
+precision_module.straight_gyro_with_condition(-500, (lambda: touch_sensor.pressed()))
 
 
 
@@ -85,6 +84,3 @@ MindsStormUtil.drive_forwards_till_color(precision_module, color_sensor, BLUE, 3
 # TODO Cornelius
 #   - combine straight_gyro with abort condition (e.g. color_sensor, touche_sensor -> bool expression)
 #   -
-
-
-                    

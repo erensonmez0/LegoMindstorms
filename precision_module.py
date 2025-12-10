@@ -43,7 +43,41 @@ class PrecisionModule:
 
 
 
+
 # TODO find good values for sleep.
+    def straight_gyro_with_condition(
+            self, distance: int, condition_to_check
+    ) -> None:
+        """straight(distance)
+
+        Drives straight for a given distance and then stops.
+        Accuracy is increased by unsing the gyro sensor.
+
+        Arguments:
+            :param distance: Distance to travel in mm
+            :param condition_to_check:
+        """
+
+        robotSpeed = self.straight_speed
+
+        self.drive_base.reset()
+        self.gyro_sensor.reset_angle(0)
+
+        PROPORTIONAL_GAIN = 1.1
+        if distance < 0:  # move backwards
+            while (self.drive_base.distance() > distance) and not condition_to_check():
+                reverseSpeed = -1 * robotSpeed
+                angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
+                self.drive_base.drive(reverseSpeed, angle_correction)
+                sleep(0.1)
+        elif distance > 0:  # move forwards
+            while (self.drive_base.distance() < distance) and not condition_to_check():
+                angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
+                self.drive_base.drive(robotSpeed, angle_correction)
+                sleep(0.1)
+        self.drive_base.stop()
+
+
 
     def straight_gyro(
             self, distance: int
@@ -54,27 +88,43 @@ class PrecisionModule:
         Accuracy is increased by unsing the gyro sensor.
 
         Arguments:
-            distance (Number, mm): Distance to travel
+            :param distance: Distance to travel in mm
         """
+        self.straight_gyro_with_condition(distance, False)
 
-        robotSpeed = self.straight_speed
 
-        self.drive_base.reset()
-        self.gyro_sensor.reset_angle(0)
+    # def straight_gyro(
+    #         self, distance: int
+    # ) -> None:
+    #     """straight(distance)
+    #
+    #     Drives straight for a given distance and then stops.
+    #     Accuracy is increased by unsing the gyro sensor.
+    #
+    #     Arguments:
+    #         distance (Number, mm): Distance to travel
+    #     """
+    #
+    #     robotSpeed = self.straight_speed
+    #
+    #     self.drive_base.reset()
+    #     self.gyro_sensor.reset_angle(0)
+    #
+    #     PROPORTIONAL_GAIN = 1.1
+    #     if distance < 0:                        # move backwards
+    #         while self.drive_base.distance() > distance:
+    #             reverseSpeed = -1 * robotSpeed
+    #             angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
+    #             self.drive_base.drive(reverseSpeed, angle_correction)
+    #             sleep(0.1)
+    #     elif distance > 0:                      # move forwards
+    #         while self.drive_base.distance() < distance:
+    #             angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
+    #             self.drive_base.drive(robotSpeed, angle_correction)
+    #             sleep(0.1)
+    #     self.drive_base.stop()
 
-        PROPORTIONAL_GAIN = 1.1
-        if distance < 0:                        # move backwards
-            while self.drive_base.distance() > distance:
-                reverseSpeed = -1 * robotSpeed
-                angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
-                self.drive_base.drive(reverseSpeed, angle_correction)
-                sleep(0.1)
-        elif distance > 0:                      # move forwards
-            while self.drive_base.distance() < distance:
-                angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
-                self.drive_base.drive(robotSpeed, angle_correction)
-                sleep(0.1)
-        self.drive_base.stop()
+
 
 
 
