@@ -4,7 +4,7 @@ from pybricks.hubs import EV3Brick
 from pybricks.parameters import Port
 from pybricks.robotics import DriveBase
 
-from mindstorm_util import MindsStormUtil
+from bridge import Bridge
 from precision_module import PrecisionModule
 from line_follower import LineFollower
 from time import sleep
