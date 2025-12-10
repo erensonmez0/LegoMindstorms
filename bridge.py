@@ -28,15 +28,14 @@ class Bridge:
         self.precision_module.turn_gyro(self.TURN_RIGHT)
         self.precision_module.straight_gyro(- (self.DISTANCE_TO_BRIDGE_START - 50))
 
-
-        if not MindsStormUtil.drive_backwards_till_wall(self.precision_module, self.touch_sensor, 200):
-            return
+        # drive backwards till touching the wall
+        self.precision_module.straight_gyro_with_condition(-200, lambda:(self.touch_sensor.pressed()))
 
         # drive to startpoint of ramp
         self.precision_module.straight_gyro(self.DISTANCE_TO_BRIDGE_START)
         self.precision_module.turn_gyro(self.TURN_LEFT)
 
-        MindsStormUtil.drive_forwards_till_color(self.precision_module, self.color_sensor, BLUE, 300)
+        self.precision_module.straight_gyro_with_condition(300, lambda:MindsStormUtil.check_color(self.color_sensor, BLUE))
 
 
         
