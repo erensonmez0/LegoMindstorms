@@ -12,6 +12,7 @@ from precision_module import PrecisionModule
 from line_follower import LineFollower
 from bridge import Bridge
 from time import sleep
+from pringler import Pringler
 
 from precision_module import PrecisionModule
 
@@ -34,34 +35,12 @@ drive_base.settings(straight_speed, straight_acceleration, turn_rate, turn_accel
 
 color_sensor = ColorSensor(Port.S2)                     # used for band detection
 ultrasonic_sensor = UltrasonicSensor(Port.S4)           # used for obstacle detection
-gyro_sensor  = GyroSensor(Port.S1)                      # used for navigation via drive_base
-touche_sensor = TouchSensor(Port.S3)                   # used for wall alignment?
-
-precision_module = PrecisionModule(
-    left_motor,
-    right_motor,
-    drive_base,
-    straight_speed,
-    straight_acceleration,
-    turn_rate,
-    turn_acceleration,
-    gyro_sensor)
+"""gyro_sensor  = GyroSensor(Port.S1)                      # used for navigation via drive_base
+touche_sensor = TouchSensor(Port.S3)  """                 # used for wall alignment?
 
 
-# precision_module.straight_gyro(2000)
-# sleep(5)
-# precision_module.turn_gyro(360)
-# sleep(5)
-# precision_module.turn_gyro(-360)
-# sleep(5)
-# precision_module.straight_gyro(-2000)
-
-bridge = Bridge(precision_module, touche_sensor, color_sensor)
-
-bridge.align_start()
-
-
-
+pringler = Pringler(drive_base, motor, color_sensor, ultrasonic_sensor)
+pringler.run()
 
 # TODO
 #   - refactoring
