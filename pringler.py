@@ -44,8 +44,8 @@ class Pringler:
                 self.drive_base.turn(-90)
                 return
     
-    def prep_for_bridge
-
+    def prep_for_bridge(self):
+        pass
 
         
     def run(self):
