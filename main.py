@@ -8,9 +8,9 @@ from pybricks.robotics import DriveBase
 # from pybricks.robotics import GyroDriveBase
 from time import sleep
 
+from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
 from line_follower import LineFollower
-from bridge import Bridge
 from time import sleep
 from pringler import Pringler
 
@@ -31,6 +31,12 @@ straight_acceleration = 100
 turn_rate = 120
 turn_acceleration = 120
 
+# rgb-color values
+WHITE = (23, 52, 39)
+BROWN = (1, 7, 0)
+BLUE = (2, 17, 17)
+RED = (6, 4, 0)
+
 drive_base.settings(straight_speed, straight_acceleration, turn_rate, turn_acceleration)
 
 color_sensor = ColorSensor(Port.S2)                     # used for band detection
@@ -43,15 +49,19 @@ pringler = Pringler(drive_base, motor, color_sensor, ultrasonic_sensor)
 pringler.run()
 
 # TODO
-#   - refactoring
-#   - utils class
+#   - precision_module testen
 #   - menu einbinden
-#   - kalibrieren (gewicht verschieben?)
+#   - neu kalibrieren (gewicht verschieben?)
+#   - greifarm aktuieren
 #   - brücke
 #   - linien folgen
 #   - farbfinden
+#   - pringler
 #
-#
+
+# TODO Cornelius
+#   - combine straight_gyro with abort condition (e.g. color_sensor, touche_sensor -> bool expression)
+#   -
 
 
                     
