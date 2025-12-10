@@ -22,7 +22,7 @@ left_motor = Motor(Port.B)
 right_motor = Motor(Port.C)
 motor = Motor(Port.D)
 wheel_diameter = 33
-axle_track = 160
+axle_track = 165
 drive_base = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
 
 straight_speed = 200
@@ -258,7 +258,6 @@ main()
 
 # TODO
 #   - precision_module testen
-#   - menu einbinden
 #   - neu kalibrieren (gewicht verschieben?)
 #   - greifarm aktuieren
 #   - brücke
@@ -266,9 +265,5 @@ main()
 #   - farbfinden
 #   - pringler
 #
-
-# TODO Cornelius
-#   - combine straight_gyro with abort condition (e.g. color_sensor, touche_sensor -> bool expression)
-#   -
 
 
