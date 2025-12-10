@@ -7,6 +7,7 @@ from pybricks.tools import wait
 from pybricks.media.ev3dev import Font
 from time import sleep
 
+from bridge import Bridge
 from precision_module import PrecisionModule
 from line_follower import LineFollower
 from color_field import ColorField
@@ -271,4 +272,3 @@ main()
 #   -
 
 
-                    

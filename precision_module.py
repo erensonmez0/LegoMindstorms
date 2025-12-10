@@ -94,7 +94,7 @@ class PrecisionModule:
         Arguments:
             :param distance: Distance to travel in mm
         """
-        self.straight_gyro_with_condition(distance, False)
+        self.straight_gyro_with_condition(distance, lambda: False)
 
 
 
