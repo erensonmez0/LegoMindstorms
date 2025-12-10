@@ -2,7 +2,7 @@ from time import sleep
 
 from pybricks.ev3devices import TouchSensor, ColorSensor
 
-from main import BLUE
+from config import BLUE
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
 
