@@ -66,5 +66,5 @@ pringler.run()
 #
 
 # TODO Cornelius
-#   - combine straight_gyro with abort condition (e.g. color_sensor, touche_sensor -> bool expression)
+#   -
 #   -
