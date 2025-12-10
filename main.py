@@ -51,19 +51,8 @@ precision_module = PrecisionModule(
     gyro_sensor)
 
 
-# precision_module.straight_gyro(2000)
-# sleep(5)
-# precision_module.turn_gyro(360)
-# sleep(5)
-# precision_module.turn_gyro(-360)
-# sleep(5)
-# precision_module.straight_gyro(-2000)
-
-# bridge = Bridge(precision_module, touche_sensor, color_sensor)
-
-# bridge.run()
-
-
+pringler = Pringler(drive_base=drive_base,arm_motor=motor,color_sensor=color_sensor,ultrasonic_sensor=ultrasonic_sensor,precision_module=precision_module)
+pringler.run()
 
 # TODO
 #   - precision_module testen
