@@ -6,6 +6,9 @@ from pybricks.robotics import DriveBase
 
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
+from line_follower import LineFollower
+from time import sleep
+from pringler import Pringler
 
 # from pybricks.robotics import GyroDriveBase
 
