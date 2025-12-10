@@ -150,7 +150,11 @@ def run_pringler():
     try:
         pringler = Pringler(
             drive_base=drive_base,
-            color_sensor=color_sensor
+            arm_motor=motor,
+            color_sensor=color_sensor,
+            ultrasonic_sensor=ultrasonic_sensor,
+            precision_module=precision_module,
+            touch_sensor=touch_sensor
         )
         pringler.run()
     except Exception as e:

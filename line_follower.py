@@ -6,6 +6,8 @@ from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
 from pybricks.tools import DataLog, StopWatch, wait
 from precision_module import PrecisionModule
+from config import BLUE
+from mindstorm_util import MindsStormUtil
 
 import time
 
@@ -36,7 +38,7 @@ class LineFollower:
         
         
         # Start following the line endlessly.
-        while True:
+        while not MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE):
 
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
