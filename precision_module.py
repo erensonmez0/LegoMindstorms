@@ -53,9 +53,13 @@ class PrecisionModule:
         Drives straight for a given distance and then stops.
         Accuracy is increased by unsing the gyro sensor.
 
+        Example use:
+            precision_module.straight_gyro_with_condition(-500, (lambda: MindsStormUtil.tempBool(touche_sensor)))
+            precision_module.straight_gyro_with_condition(-500, (lambda: touch_sensor.pressed()))
+
         Arguments:
             :param distance: Distance to travel in mm
-            :param condition_to_check:
+            :param condition_to_check: Will continuously check this condition (please give as "lambda:") and abort if true
         """
 
         robotSpeed = self.straight_speed
@@ -91,40 +95,6 @@ class PrecisionModule:
             :param distance: Distance to travel in mm
         """
         self.straight_gyro_with_condition(distance, False)
-
-
-    # def straight_gyro(
-    #         self, distance: int
-    # ) -> None:
-    #     """straight(distance)
-    #
-    #     Drives straight for a given distance and then stops.
-    #     Accuracy is increased by unsing the gyro sensor.
-    #
-    #     Arguments:
-    #         distance (Number, mm): Distance to travel
-    #     """
-    #
-    #     robotSpeed = self.straight_speed
-    #
-    #     self.drive_base.reset()
-    #     self.gyro_sensor.reset_angle(0)
-    #
-    #     PROPORTIONAL_GAIN = 1.1
-    #     if distance < 0:                        # move backwards
-    #         while self.drive_base.distance() > distance:
-    #             reverseSpeed = -1 * robotSpeed
-    #             angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
-    #             self.drive_base.drive(reverseSpeed, angle_correction)
-    #             sleep(0.1)
-    #     elif distance > 0:                      # move forwards
-    #         while self.drive_base.distance() < distance:
-    #             angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
-    #             self.drive_base.drive(robotSpeed, angle_correction)
-    #             sleep(0.1)
-    #     self.drive_base.stop()
-
-
 
 
 

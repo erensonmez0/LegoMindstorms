@@ -1,8 +1,4 @@
-from time import sleep
-
 from pybricks.ev3devices import TouchSensor, ColorSensor
-
-from precision_module import PrecisionModule
 
 
 class MindsStormUtil:

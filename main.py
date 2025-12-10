@@ -63,14 +63,6 @@ precision_module = PrecisionModule(
 
 # bridge.run()
 
-# MindsStormUtil.drive_forwards_till_color(precision_module, color_sensor, BLUE, 300)
-
-
-
-# precision_module.straight_gyro_with_condition(-500, (lambda: MindsStormUtil.tempBool(touche_sensor)))
-
-precision_module.straight_gyro_with_condition(-500, (lambda: touch_sensor.pressed()))
-
 
 
 # TODO
@@ -85,5 +77,5 @@ precision_module.straight_gyro_with_condition(-500, (lambda: touch_sensor.presse
 #
 
 # TODO Cornelius
-#   - combine straight_gyro with abort condition (e.g. color_sensor, touche_sensor -> bool expression)
+#   -
 #   -
