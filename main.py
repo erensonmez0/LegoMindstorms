@@ -51,27 +51,8 @@ precision_module = PrecisionModule(
     gyro_sensor)
 
 
-# precision_module.straight_gyro(2000)
-# sleep(5)
-# precision_module.turn_gyro(360)
-# sleep(5)
-# precision_module.turn_gyro(-360)
-# sleep(5)
-# precision_module.straight_gyro(-2000)
-
-# bridge = Bridge(precision_module, touche_sensor, color_sensor)
-
-# bridge.run()
-
-# MindsStormUtil.drive_forwards_till_color(precision_module, color_sensor, BLUE, 300)
-
-
-
-# precision_module.straight_gyro_with_condition(-500, (lambda: MindsStormUtil.tempBool(touche_sensor)))
-
-precision_module.straight_gyro_with_condition(-500, (lambda: touch_sensor.pressed()))
-
-
+pringler = Pringler(drive_base=drive_base,arm_motor=motor,color_sensor=color_sensor,ultrasonic_sensor=ultrasonic_sensor,precision_module=precision_module)
+pringler.run()
 
 # TODO
 #   - precision_module testen
