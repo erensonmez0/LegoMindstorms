@@ -21,16 +21,16 @@ class PrecisionModule:
         """PrecisionModule(left_motor, right_motor, wheel_diameter, axle_track, gyro_sensor)
 
         Arguments:
-            left_motor (Motor):
+            :param left_motor (Motor):
                 The motor that drives the left wheel.
-            right_motor (Motor):
+            :param right_motor (Motor):
                 The motor that drives the right wheel.
-            drive_base {DriveBase}: Given drive base to operate on.
-            straight_speed (Number, mm): Speed when going straight.
-            straight_acceleration (Number, mm): Acceleration when going straight.
-            turn_rate (Number, mm): Speed when turning.
-            turn_acceleration (Number, mm): Acceleration when turning.
-            gyro_sensor (GyroSensor): Gyro sensor to measure angles and distances.
+            :param drive_base {DriveBase}: Given drive base to operate on.
+            :param straight_speed (Number, mm): Speed when going straight.
+            :param straight_acceleration (Number, mm): Acceleration when going straight.
+            :param turn_rate (Number, mm): Speed when turning.
+            :param turn_acceleration (Number, mm): Acceleration when turning.
+            :param gyro_sensor (GyroSensor): Gyro sensor to measure angles and distances.
         """
         self.left_motor = left_motor
         self.right_motor = right_motor
@@ -107,7 +107,7 @@ class PrecisionModule:
         Accuracy is increased by unsing the gyro sensor.
 
         Arguments:
-            angle (Number, deg): Angle of the turn.
+            :param angle: Angle of the turn in degree.
         """
         speed = self.turn_rate
 
