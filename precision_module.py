@@ -73,12 +73,10 @@ class PrecisionModule:
                 reverseSpeed = -1 * robotSpeed
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(reverseSpeed, angle_correction)
-                sleep(0.1)
         elif distance > 0:  # move forwards
             while (self.drive_base.distance() < distance) and not condition_to_check():
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(robotSpeed, angle_correction)
-                sleep(0.1)
         self.drive_base.stop()
 
 
@@ -111,17 +109,18 @@ class PrecisionModule:
         """
         speed = self.turn_rate
 
+        # angle correction
+        angle = angle * 0.985
+
         self.gyro_sensor.reset_angle(0)
         if angle < 0:
             while self.gyro_sensor.angle() > angle:
                 self.right_motor.run(speed=(-1 * speed))
                 self.left_motor.run(speed=speed)
-                sleep(0.1)
         elif angle > 0:
             while self.gyro_sensor.angle() < angle:
                 self.right_motor.run(speed=speed)
                 self.left_motor.run(speed=(-1 * speed))
-                sleep(0.1)
 
         self.right_motor.brake()
         self.left_motor.brake()
