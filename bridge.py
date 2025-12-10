@@ -26,10 +26,9 @@ class Bridge:
     def align_start(self):
         self.precision_module.straight_gyro(-100)
         self.precision_module.turn_gyro(self.TURN_RIGHT)
-        self.precision_module.straight_gyro(- (self.DISTANCE_TO_BRIDGE_START - 50))
 
         # drive backwards till touching the wall
-        self.precision_module.straight_gyro_with_condition(-200, lambda:(self.touch_sensor.pressed()))
+        self.precision_module.straight_gyro_with_condition(-300, lambda:(self.touch_sensor.pressed()))
 
         # drive to startpoint of ramp
         self.precision_module.straight_gyro(self.DISTANCE_TO_BRIDGE_START)
