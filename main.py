@@ -101,12 +101,20 @@ def menu_select(initial=0):
         if Button.UP in b:
             i = (i - 1) % len(Section.ORDER)
             wait_release()
+            wait(50)
+
         elif Button.DOWN in b:
             i = (i + 1) % len(Section.ORDER)
             wait_release()
+            wait(50)
+
         elif Button.CENTER in b:
             wait_release()
             return Section.ORDER[i]
+        
+        elif Button.LEFT in b:
+            wait_release()
+            return None
 
 # ---------------------- Section Runners ----------------------
 def run_line_follow():
@@ -130,6 +138,8 @@ def run_line_follow():
     ev3.screen.clear()
     ev3.screen.print("Fertig!")
     ev3.screen.print("Enter: Menu")
+
+    wait_release()
     while True:
         wait(80)
         if Button.CENTER in ev3.buttons.pressed():
@@ -160,6 +170,8 @@ def run_pringler():
     ev3.screen.clear()
     ev3.screen.print("Fertig!")
     ev3.screen.print("Enter: Menu")
+    wait_release()
+
     while True:
         wait(80)
         if Button.CENTER in ev3.buttons.pressed():
@@ -187,6 +199,8 @@ def run_bridge():
     ev3.screen.clear()
     ev3.screen.print("Fertig!")
     ev3.screen.print("Enter: Menu")
+    wait_release()
+
     while True:
         wait(80)
         if Button.CENTER in ev3.buttons.pressed():
@@ -216,6 +230,9 @@ def run_color_field():
     ev3.screen.clear()
     ev3.screen.print("Fertig!")
     ev3.screen.print("Enter: Menu")
+
+    wait_release()
+
     while True:
         wait(80)
         if Button.CENTER in ev3.buttons.pressed():
@@ -225,6 +242,11 @@ def run_color_field():
 # ---------------------- Main Loop ----------------------
 def main():
     current = menu_select(0)
+
+    if current is None:  # LEFT button pressed in menu
+        ev3.screen.clear()
+        ev3.screen.print("Programm beendet.")
+        return
     
     while True:
         if current == Section.EXIT:
@@ -233,16 +255,23 @@ def main():
             break
         elif current == Section.LINE_FOLLOW:
             run_line_follow()
-            current = menu_select(Section.ORDER.index(Section.LINE_FOLLOW))
+            # current = menu_select(Section.ORDER.index(Section.LINE_FOLLOW))
         elif current == Section.PRINGLER:
             run_pringler()
-            current = menu_select(Section.ORDER.index(Section.PRINGLER))
+            # current = menu_select(Section.ORDER.index(Section.PRINGLER))
         elif current == Section.BRIDGE:
             run_bridge()
-            current = menu_select(Section.ORDER.index(Section.BRIDGE))
+            # current = menu_select(Section.ORDER.index(Section.BRIDGE))
         elif current == Section.COLOR_FIELD:
             run_color_field()
-            current = menu_select(Section.ORDER.index(Section.COLOR_FIELD))
+            # current = menu_select(Section.ORDER.index(Section.COLOR_FIELD))
+
+        current = menu_select(Section.ORDER.index(current))
+
+        if current is None:  # LEFT button pressed in menu
+            ev3.screen.clear()
+            ev3.screen.print("Programm beendet.")
+            break
 
 
 main()
