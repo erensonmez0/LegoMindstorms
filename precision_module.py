@@ -127,7 +127,8 @@ class PrecisionModule:
             :param distance: Distance to travel in mm
             :param condition_to_check: Will continuously check this condition (please give as "lambda:") and abort if true
         """
-        robotSpeed = self.straight_speed
+        # robotSpeed = self.straight_speed
+        min_speed = 50
 
         self.drive_base.reset()
         self.gyro_sensor.reset_angle(0)
@@ -135,11 +136,21 @@ class PrecisionModule:
         PROPORTIONAL_GAIN = 1.1
         if distance < 0:  # move backwards
             while (self.drive_base.distance() > distance) and not condition_to_check():
+                robotSpeed = min(
+                    max(
+                        (0.005 * self.straight_speed * abs(distance - self.drive_base.distance())),
+                        min_speed),
+                    self.straight_speed)
                 reverseSpeed = -1 * robotSpeed
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(reverseSpeed, angle_correction)
         elif distance > 0:  # move forwards
             while (self.drive_base.distance() < distance) and not condition_to_check():
+                robotSpeed = min(
+                    max(
+                        (0.005 * self.straight_speed * abs(distance - self.drive_base.distance())),
+                        min_speed),
+                    self.straight_speed)
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(robotSpeed, angle_correction)
         self.drive_base.stop()
@@ -170,7 +181,7 @@ class PrecisionModule:
         Arguments:
             :param angle: Angle of the turn in degree.
         """
-        speed = self.turn_rate
+        # speed = self.turn_rate
         min_speed = 50
 
         # angle correction
