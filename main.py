@@ -315,10 +315,8 @@ main()
 
 
 # TODO
-#   - (precision_module testen)
-#   - greifarm aktuieren
-#   - brücke
-#   - linien folgen
-#   - farbfinden
-#   - pringler
+#   - precision_module testen -> straight und turn
+#   - farbfinden -> anfang
+#   - pringler  -> greifen
+#   - Übergang brücke farbfeld
 #
