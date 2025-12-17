@@ -12,6 +12,7 @@ from config import *
 from line_follower import LineFollower
 from precision_module import PrecisionModule
 from pringler import Pringler
+from debug_test import DebugTest
 
 
 # ---------------------- Hardware setup ----------------------
@@ -91,13 +92,14 @@ def change_turn_speed(new_turn_rate, new_turn_acceleration=None):
 
 
 class Section:
-    LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, EXIT = range(5)
-    ORDER = [LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, EXIT]
+    LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, EXIT = range(5)
+    ORDER = [LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, EXIT]
     NAMES = {
         LINE_FOLLOW: "Linienfolgen",
         PRINGLER: "Pringler",
         BRIDGE: "Brücke",
         COLOR_FIELD: "Farbfeldsuche",
+        DEBUG: "Debug",
         EXIT: "Beenden",
     }
 
@@ -274,6 +276,38 @@ def run_color_field():
         if Button.CENTER in ev3.buttons.pressed():
             wait_release()
             return
+        
+def run_debug_callibration():
+    ev3.screen.clear()
+    ev3.screen.print("Debug")
+    ev3.screen.print("Starting...")
+    
+    try:
+        debug_test = DebugTest(
+            drive_base=drive_base,
+            arm_motor=motor,
+            color_sensor=color_sensor,
+            ultrasonic_sensor=ultrasonic_sensor,
+            precision_module=precision_module,
+            touch_sensor=touch_sensor
+        )
+        debug_test.run()
+    except Exception as e:
+        ev3.screen.clear()
+        ev3.screen.print("Error:")
+        ev3.screen.print(str(e))
+        wait(3000)
+    
+    ev3.screen.clear()
+    ev3.screen.print("Fertig!")
+    ev3.screen.print("Enter: Menu")
+
+    wait_release()
+    while True:
+        wait(80)
+        if Button.CENTER in ev3.buttons.pressed():
+            wait_release()
+            return
 
 # ---------------------- Main Loop ----------------------
 def main():
@@ -297,6 +331,8 @@ def main():
             run_bridge()
         elif current == Section.COLOR_FIELD:
             run_color_field()
+        elif current == Section.DEBUG:
+            run_debug_callibration()    
 
         current = menu_select(Section.ORDER.index(current))
 
