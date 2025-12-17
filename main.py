@@ -54,6 +54,36 @@ LIST_Y0 = 14
 TEXT_X = 10
 BAR_W = 6
 
+
+def change_straight_speed(new_speed, new_acceleration=None):
+    """
+    Set new Speed (and optional acceleration) for whole class.
+    :param new_speed: New value for speed
+    :param new_acceleration: Optional value for acceleration
+    """
+    if new_acceleration:
+        drive_base.settings(new_speed, new_acceleration, TURN_RATE, TURN_ACCELERATION)
+        precision_module.settings(new_speed, new_acceleration, TURN_RATE, TURN_ACCELERATION)
+    else:
+        drive_base.settings(new_speed, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
+        precision_module.settings(new_speed, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
+
+
+def change_turn_speed(new_turn_rate, new_turn_acceleration=None):
+    """
+        Set new turn speed (and optional turn acceleration) for whole class.
+        :param new_turn_rate: New value for turn rate
+        :param new_turn_acceleration: Optional value for turn acceleration
+        """
+    if new_turn_acceleration:
+        drive_base.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
+        precision_module.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
+    else:
+        drive_base.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
+        precision_module.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
+
+
+
 class Section:
     LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, EXIT = range(5)
     ORDER = [LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, EXIT]

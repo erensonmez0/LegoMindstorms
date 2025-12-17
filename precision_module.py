@@ -42,6 +42,45 @@ class PrecisionModule:
         self.gyro_sensor = gyro_sensor
 
 
+    def settings(
+            self,
+            straight_speed,
+            straight_acceleration,
+            turn_rate,
+            turn_acceleration):
+        """
+        Change the constants settings to new values.
+
+        Arguments:
+        :param straight_speed: New value for straight speed.
+        :param straight_acceleration: New value for straight acceleration.
+        :param turn_rate: New value for turn rate.
+        :param turn_acceleration: New value for turn acceleration.
+        """
+        self.straight_speed = straight_speed
+        self.straight_acceleration = straight_acceleration
+        self.turn_rate = turn_rate
+        self.turn_acceleration = turn_acceleration
+
+
+    def change_input_output(
+            self,
+            left_motor: Motor,
+            right_motor: Motor,
+            gyro_sensor: GyroSensor):
+        """
+        Change the Motors and Sensors to new instances.
+
+        :param left_motor: New left motor.
+        :param right_motor: New right motor.
+        :param gyro_sensor: New gyro sensor.
+        """
+        self.left_motor = left_motor
+        self.right_motor = right_motor
+        self.gyro_sensor = gyro_sensor
+
+
+
 
     def straight_gyro_with_condition(
             self, distance: int, condition_to_check
