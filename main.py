@@ -24,7 +24,7 @@ motor = Motor(Port.D)
 
 # Setup Drive base
 drive_base = DriveBase(left_motor, right_motor, WHEEL_DIAMETER, AXLE_TRACK)
-drive_base.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
+drive_base.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
 
 # Setup Sensors
 color_sensor = ColorSensor(Port.S2)                     # used for band detection
@@ -37,7 +37,7 @@ precision_module = PrecisionModule(
     left_motor,
     right_motor,
     drive_base,
-    STRAIGHT_SPEED,
+    STRAIGHT_SPEED_FAST,
     STRAIGHT_ACCELERATION,
     TURN_RATE,
     TURN_ACCELERATION,
@@ -71,6 +71,10 @@ def change_straight_speed(new_speed, new_acceleration=None):
         precision_module.settings(new_speed, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
 
 
+def get_straight_speed():
+    return precision_module.straight_speed, precision_module.straight_acceleration
+
+
 def change_turn_speed(new_turn_rate, new_turn_acceleration=None):
     """
         Set new turn speed (and optional turn acceleration) for whole class.
@@ -78,11 +82,11 @@ def change_turn_speed(new_turn_rate, new_turn_acceleration=None):
         :param new_turn_acceleration: Optional value for turn acceleration
         """
     if new_turn_acceleration:
-        drive_base.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
-        precision_module.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
+        drive_base.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
+        precision_module.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
     else:
-        drive_base.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
-        precision_module.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
+        drive_base.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
+        precision_module.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
 
 
 

@@ -3,6 +3,7 @@ from time import sleep
 from pybricks.ev3devices import TouchSensor, ColorSensor
 
 from config import *
+from main import change_straight_speed
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
 
@@ -17,6 +18,10 @@ class Bridge:
         self.precision_module.straight_gyro(-100)
         self.precision_module.turn_gyro(TURN_RIGHT)
 
+        # save current speed and change to slow
+        temp_speed = self.precision_module.straight_speed
+        change_straight_speed(STRAIGHT_SPEED_SLOW)
+
         # drive backwards till touching the wall
         self.precision_module.straight_gyro_with_condition(-300, lambda:(self.touch_sensor.pressed()))
 
@@ -26,6 +31,8 @@ class Bridge:
 
         self.precision_module.straight_gyro_with_condition(300, lambda:MindsStormUtil.check_color(self.color_sensor, BLUE))
 
+        # change current speed back to original value
+        change_straight_speed(temp_speed)
 
     def drive_bridge(self):
         self.precision_module.straight_gyro(RAMP_UP)
@@ -36,5 +43,5 @@ class Bridge:
 
     def run(self):
         self.align_start()
-        sleep(5)
+        sleep(2.5)
         self.drive_bridge()
