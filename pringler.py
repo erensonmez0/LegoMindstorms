@@ -55,7 +55,6 @@ class Pringler:
         self.precision_module.straight_gyro_with_condition(3000, lambda:MindsStormUtil.check_color(self.color_sensor, BLUE))
 
 
-
     def run(self):
         distance_from_end = 800
         distance_from_pring = 40

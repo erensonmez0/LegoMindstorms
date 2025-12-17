@@ -80,8 +80,6 @@ class PrecisionModule:
         self.gyro_sensor = gyro_sensor
 
 
-
-
     def straight_gyro_with_condition(
             self, distance: int, condition_to_check
     ) -> None:
@@ -98,7 +96,6 @@ class PrecisionModule:
             :param distance: Distance to travel in mm
             :param condition_to_check: Will continuously check this condition (please give as "lambda:") and abort if true
         """
-
         robotSpeed = self.straight_speed
 
         self.drive_base.reset()
@@ -117,7 +114,6 @@ class PrecisionModule:
         self.drive_base.stop()
 
 
-
     def straight_gyro(
             self, distance: int
     ) -> None:
@@ -130,7 +126,6 @@ class PrecisionModule:
             :param distance: Distance to travel in mm
         """
         self.straight_gyro_with_condition(distance, lambda: False)
-
 
 
     def turn_gyro(

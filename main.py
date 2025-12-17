@@ -13,6 +13,7 @@ from line_follower import LineFollower
 from precision_module import PrecisionModule
 from pringler import Pringler
 
+
 # ---------------------- Hardware setup ----------------------
 ev3 = EV3Brick()
 
@@ -55,6 +56,7 @@ TEXT_X = 10
 BAR_W = 6
 
 
+#----------------------- Helping Methods -----------------------
 def change_straight_speed(new_speed, new_acceleration=None):
     """
     Set new Speed (and optional acceleration) for whole class.
@@ -285,16 +287,12 @@ def main():
             break
         elif current == Section.LINE_FOLLOW:
             run_line_follow()
-            # current = menu_select(Section.ORDER.index(Section.LINE_FOLLOW))
         elif current == Section.PRINGLER:
             run_pringler()
-            # current = menu_select(Section.ORDER.index(Section.PRINGLER))
         elif current == Section.BRIDGE:
             run_bridge()
-            # current = menu_select(Section.ORDER.index(Section.BRIDGE))
         elif current == Section.COLOR_FIELD:
             run_color_field()
-            # current = menu_select(Section.ORDER.index(Section.COLOR_FIELD))
 
         current = menu_select(Section.ORDER.index(current))
 
