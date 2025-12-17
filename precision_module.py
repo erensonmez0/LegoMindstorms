@@ -160,7 +160,7 @@ class PrecisionModule:
 
 
     def turn_gyro(
-            self, angle: int
+            self, angle: float
     ) -> None:
         """turn(angle)
 
