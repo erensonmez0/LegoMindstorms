@@ -16,8 +16,7 @@ class MindsStormUtil:
         :param color_value: Color value to compare to
         :return: True if values are close to color, False otherwise
         """
-        threshold = 5
+        threshold = 10
         return ((-threshold < (color_sensor.rgb()[0] - color_value[0]) < threshold)
                 and (-threshold < (color_sensor.rgb()[1] - color_value[1]) < threshold)
                 and (-threshold < (color_sensor.rgb()[2] - color_value[2]) < threshold))
-

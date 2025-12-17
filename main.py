@@ -1,52 +1,46 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor, TouchSensor
+from pybricks.hubs import EV3Brick
+from pybricks.media.ev3dev import Font
 from pybricks.parameters import Port, Button
 from pybricks.robotics import DriveBase
 from pybricks.tools import wait
-from pybricks.media.ev3dev import Font
-from time import sleep
 
 from bridge import Bridge
-from precision_module import PrecisionModule
-from line_follower import LineFollower
 from color_field import ColorField
+from config import *
+from line_follower import LineFollower
+from precision_module import PrecisionModule
 from pringler import Pringler
-from bridge import Bridge
-from config import WHITE, BROWN, BLUE, RED  # Import colors from config
+
 
 # ---------------------- Hardware setup ----------------------
 ev3 = EV3Brick()
 
+#Setup Motors
 left_motor = Motor(Port.B)
 right_motor = Motor(Port.C)
 motor = Motor(Port.D)
-wheel_diameter = 33
-axle_track = 160
-drive_base = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
 
-straight_speed = 200
-straight_acceleration = 200
-turn_rate = 120
-turn_acceleration = 120
+# Setup Drive base
+drive_base = DriveBase(left_motor, right_motor, WHEEL_DIAMETER, AXLE_TRACK)
+drive_base.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
 
-drive_base.settings(straight_speed, straight_acceleration, turn_rate, turn_acceleration)
-
+# Setup Sensors
 color_sensor = ColorSensor(Port.S2)                     # used for band detection
 ultrasonic_sensor = UltrasonicSensor(Port.S4)           # used for obstacle detection
 gyro_sensor  = GyroSensor(Port.S1)                      # used for navigation via drive_base
-touch_sensor = TouchSensor(Port.S3)                   # used for wall alignment?
+touch_sensor = TouchSensor(Port.S3)                     # used for wall alignment
 
-
-# Create precision module
+# Setup precision module
 precision_module = PrecisionModule(
     left_motor,
     right_motor,
     drive_base,
-    straight_speed,
-    straight_acceleration,
-    turn_rate,
-    turn_acceleration,
+    STRAIGHT_SPEED_FAST,
+    STRAIGHT_ACCELERATION,
+    TURN_RATE,
+    TURN_ACCELERATION,
     gyro_sensor
 )
 
@@ -60,6 +54,41 @@ LINE_H = FONT_SIZE + 2
 LIST_Y0 = 14
 TEXT_X = 10
 BAR_W = 6
+
+
+#----------------------- Helping Methods -----------------------
+def change_straight_speed(new_speed, new_acceleration=None):
+    """
+    Set new Speed (and optional acceleration) for whole class.
+    :param new_speed: New value for speed
+    :param new_acceleration: Optional value for acceleration
+    """
+    if new_acceleration:
+        drive_base.settings(new_speed, new_acceleration, TURN_RATE, TURN_ACCELERATION)
+        precision_module.settings(new_speed, new_acceleration, TURN_RATE, TURN_ACCELERATION)
+    else:
+        drive_base.settings(new_speed, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
+        precision_module.settings(new_speed, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
+
+
+def get_straight_speed():
+    return precision_module.straight_speed, precision_module.straight_acceleration
+
+
+def change_turn_speed(new_turn_rate, new_turn_acceleration=None):
+    """
+        Set new turn speed (and optional turn acceleration) for whole class.
+        :param new_turn_rate: New value for turn rate
+        :param new_turn_acceleration: Optional value for turn acceleration
+        """
+    if new_turn_acceleration:
+        drive_base.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
+        precision_module.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
+    else:
+        drive_base.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
+        precision_module.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
+
+
 
 class Section:
     LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, EXIT = range(5)
@@ -108,12 +137,20 @@ def menu_select(initial=0):
         if Button.UP in b:
             i = (i - 1) % len(Section.ORDER)
             wait_release()
+            wait(50)
+
         elif Button.DOWN in b:
             i = (i + 1) % len(Section.ORDER)
             wait_release()
+            wait(50)
+
         elif Button.CENTER in b:
             wait_release()
             return Section.ORDER[i]
+        
+        elif Button.LEFT in b:
+            wait_release()
+            return None
 
 # ---------------------- Section Runners ----------------------
 def run_line_follow():
@@ -137,6 +174,8 @@ def run_line_follow():
     ev3.screen.clear()
     ev3.screen.print("Fertig!")
     ev3.screen.print("Enter: Menu")
+
+    wait_release()
     while True:
         wait(80)
         if Button.CENTER in ev3.buttons.pressed():
@@ -167,6 +206,8 @@ def run_pringler():
     ev3.screen.clear()
     ev3.screen.print("Fertig!")
     ev3.screen.print("Enter: Menu")
+    wait_release()
+
     while True:
         wait(80)
         if Button.CENTER in ev3.buttons.pressed():
@@ -194,6 +235,8 @@ def run_bridge():
     ev3.screen.clear()
     ev3.screen.print("Fertig!")
     ev3.screen.print("Enter: Menu")
+    wait_release()
+
     while True:
         wait(80)
         if Button.CENTER in ev3.buttons.pressed():
@@ -223,6 +266,9 @@ def run_color_field():
     ev3.screen.clear()
     ev3.screen.print("Fertig!")
     ev3.screen.print("Enter: Menu")
+
+    wait_release()
+
     while True:
         wait(80)
         if Button.CENTER in ev3.buttons.pressed():
@@ -232,6 +278,11 @@ def run_color_field():
 # ---------------------- Main Loop ----------------------
 def main():
     current = menu_select(0)
+
+    if current is None:  # LEFT button pressed in menu
+        ev3.screen.clear()
+        ev3.screen.print("Programm beendet.")
+        return
     
     while True:
         if current == Section.EXIT:
@@ -240,35 +291,30 @@ def main():
             break
         elif current == Section.LINE_FOLLOW:
             run_line_follow()
-            current = menu_select(Section.ORDER.index(Section.LINE_FOLLOW))
         elif current == Section.PRINGLER:
             run_pringler()
-            current = menu_select(Section.ORDER.index(Section.PRINGLER))
         elif current == Section.BRIDGE:
             run_bridge()
-            current = menu_select(Section.ORDER.index(Section.BRIDGE))
         elif current == Section.COLOR_FIELD:
             run_color_field()
-            current = menu_select(Section.ORDER.index(Section.COLOR_FIELD))
+
+        current = menu_select(Section.ORDER.index(current))
+
+        if current is None:  # LEFT button pressed in menu
+            ev3.screen.clear()
+            ev3.screen.print("Programm beendet.")
+            break
 
 
 main()
-# color_field = ColorField(drive_base, color_sensor, ultrasonic_sensor, touch_sensor,)
-#  color_field.run()
+
+
 
 # TODO
-#   - precision_module testen
-#   - menu einbinden
-#   - neu kalibrieren (gewicht verschieben?)
+#   - (precision_module testen)
 #   - greifarm aktuieren
 #   - brücke
 #   - linien folgen
 #   - farbfinden
 #   - pringler
 #
-
-# TODO Cornelius
-#   - combine straight_gyro with abort condition (e.g. color_sensor, touche_sensor -> bool expression)
-#   -
-
-

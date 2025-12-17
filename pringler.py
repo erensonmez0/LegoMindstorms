@@ -1,14 +1,11 @@
+from pybricks.ev3devices import Motor, ColorSensor, UltrasonicSensor, TouchSensor
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor, TouchSensor
-from pybricks.parameters import Port
-from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
-from pybricks.tools import DataLog, StopWatch, wait
-from precision_module import PrecisionModule
-from bridge import Bridge
+
+from config import BLUE, DISTANCE_TO_BRIDGE_START, TURN_LEFT
 from mindstorm_util import MindsStormUtil
-from config import BLUE
-import time
+from precision_module import PrecisionModule
+
 
 class Pringler:
     def __init__(self, drive_base:DriveBase, arm_motor:Motor, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor, precision_module:PrecisionModule,touch_sensor:TouchSensor):
@@ -44,8 +41,6 @@ class Pringler:
     
     
     def prep_for_bridge(self):
-        DISTANCE_TO_BRIDGE_START = Bridge.DISTANCE_TO_BRIDGE_START
-        TURN_LEFT = Bridge.TURN_LEFT
         self.precision_module.straight_gyro(-100)
         self.precision_module.turn_gyro(-135)
         self.precision_module.straight_gyro_with_condition(-2000, lambda:(self.touch_sensor.pressed()))
@@ -55,9 +50,6 @@ class Pringler:
         self.precision_module.straight_gyro_with_condition(3000, lambda:MindsStormUtil.check_color(self.color_sensor, BLUE))
 
 
-
-
-        
     def run(self):
         distance_from_end = 650
         distance_from_pring = 40
@@ -74,9 +66,3 @@ class Pringler:
         self.precision_module.straight_gyro(-100)
         self.drive_base.drive(0,10000)
         self.prep_for_bridge()
-
-
-        
-
-
-    

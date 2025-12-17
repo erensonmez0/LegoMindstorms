@@ -42,9 +42,44 @@ class PrecisionModule:
         self.gyro_sensor = gyro_sensor
 
 
+    def settings(
+            self,
+            straight_speed,
+            straight_acceleration,
+            turn_rate,
+            turn_acceleration):
+        """
+        Change the constants settings to new values.
+
+        Arguments:
+        :param straight_speed: New value for straight speed.
+        :param straight_acceleration: New value for straight acceleration.
+        :param turn_rate: New value for turn rate.
+        :param turn_acceleration: New value for turn acceleration.
+        """
+        self.straight_speed = straight_speed
+        self.straight_acceleration = straight_acceleration
+        self.turn_rate = turn_rate
+        self.turn_acceleration = turn_acceleration
 
 
-# TODO find good values for sleep.
+    def change_input_output(
+            self,
+            left_motor: Motor,
+            right_motor: Motor,
+            gyro_sensor: GyroSensor):
+        """
+        Change the Motors and Sensors to new instances.
+
+        :param left_motor: New left motor.
+        :param right_motor: New right motor.
+        :param gyro_sensor: New gyro sensor.
+        """
+        self.left_motor = left_motor
+        self.right_motor = right_motor
+        self.gyro_sensor = gyro_sensor
+
+
     def straight_gyro_with_condition(
             self, distance: int, condition_to_check
     ) -> None:
@@ -61,7 +96,6 @@ class PrecisionModule:
             :param distance: Distance to travel in mm
             :param condition_to_check: Will continuously check this condition (please give as "lambda:") and abort if true
         """
-
         robotSpeed = self.straight_speed
 
         self.drive_base.reset()
@@ -73,14 +107,11 @@ class PrecisionModule:
                 reverseSpeed = -1 * robotSpeed
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(reverseSpeed, angle_correction)
-                sleep(0.1)
         elif distance > 0:  # move forwards
             while (self.drive_base.distance() < distance) and not condition_to_check():
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(robotSpeed, angle_correction)
-                sleep(0.1)
         self.drive_base.stop()
-
 
 
     def straight_gyro(
@@ -97,7 +128,6 @@ class PrecisionModule:
         self.straight_gyro_with_condition(distance, lambda: False)
 
 
-
     def turn_gyro(
             self, angle: int
     ) -> None:
@@ -111,23 +141,18 @@ class PrecisionModule:
         """
         speed = self.turn_rate
 
+        # angle correction
+        angle = angle * 0.985
+
         self.gyro_sensor.reset_angle(0)
         if angle < 0:
             while self.gyro_sensor.angle() > angle:
                 self.right_motor.run(speed=(-1 * speed))
                 self.left_motor.run(speed=speed)
-                sleep(0.1)
         elif angle > 0:
             while self.gyro_sensor.angle() < angle:
                 self.right_motor.run(speed=speed)
                 self.left_motor.run(speed=(-1 * speed))
-                sleep(0.1)
 
         self.right_motor.brake()
         self.left_motor.brake()
-
-
-
-
-
-
