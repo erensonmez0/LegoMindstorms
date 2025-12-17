@@ -1,4 +1,6 @@
 #!/usr/bin/env pybricks-micropython
+import time
+
 from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor, TouchSensor
 from pybricks.hubs import EV3Brick
 from pybricks.media.ev3dev import Font
@@ -245,10 +247,21 @@ def run_color_field():
 def main():
 
     # TODO temp entfernen
+    # precision_module.turn_gyro(10)
+    # time.sleep(3)
+    # precision_module.turn_gyro(-10)
+    # time.sleep(3)
+    # precision_module.turn_gyro(45)
+    # time.sleep(3)
+    # precision_module.turn_gyro(-45)
+    # time.sleep(3)
     # precision_module.turn_gyro(90)
-    # precision_module.turn_gyro(90)
-    # precision_module.turn_gyro(90)
-    # precision_module.turn_gyro(90)
+    # time.sleep(3)
+    # precision_module.turn_gyro(-90)
+    # time.sleep(3)
+    # precision_module.turn_gyro(360)
+    # time.sleep(3)
+    # precision_module.turn_gyro(-360)
 
 
     current = menu_select(0)

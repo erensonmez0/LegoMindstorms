@@ -171,17 +171,26 @@ class PrecisionModule:
             :param angle: Angle of the turn in degree.
         """
         speed = self.turn_rate
+        min_speed = 50
 
         # angle correction
-        angle = angle * 1.04
+        angle = angle * 1
 
         self.gyro_sensor.reset_angle(0)
         if angle < 0:
             while self.gyro_sensor.angle() > angle:
+                speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
+                # print(2)
+                # print(speed)
+                # print(self.gyro_sensor.angle())
                 self.right_motor.run(speed=(-1 * speed))
                 self.left_motor.run(speed=speed)
         elif angle > 0:
             while self.gyro_sensor.angle() < angle:
+                speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
+                # print(1)
+                # print(speed)
+                # print(self.gyro_sensor.angle())
                 self.right_motor.run(speed=speed)
                 self.left_motor.run(speed=(-1 * speed))
 
