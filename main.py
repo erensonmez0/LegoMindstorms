@@ -1,52 +1,45 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor, TouchSensor
+from pybricks.hubs import EV3Brick
+from pybricks.media.ev3dev import Font
 from pybricks.parameters import Port, Button
 from pybricks.robotics import DriveBase
 from pybricks.tools import wait
-from pybricks.media.ev3dev import Font
-from time import sleep
 
 from bridge import Bridge
-from precision_module import PrecisionModule
-from line_follower import LineFollower
 from color_field import ColorField
+from config import *
+from line_follower import LineFollower
+from precision_module import PrecisionModule
 from pringler import Pringler
-from bridge import Bridge
-from config import WHITE, BROWN, BLUE, RED  # Import colors from config
 
 # ---------------------- Hardware setup ----------------------
 ev3 = EV3Brick()
 
+#Setup Motors
 left_motor = Motor(Port.B)
 right_motor = Motor(Port.C)
 motor = Motor(Port.D)
-wheel_diameter = 33
-axle_track = 165
-drive_base = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
 
-straight_speed = 200
-straight_acceleration = 200
-turn_rate = 120
-turn_acceleration = 120
+# Setup Drive base
+drive_base = DriveBase(left_motor, right_motor, WHEEL_DIAMETER, AXLE_TRACK)
+drive_base.settings(STRAIGHT_SPEED, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
 
-drive_base.settings(straight_speed, straight_acceleration, turn_rate, turn_acceleration)
-
+# Setup Sensors
 color_sensor = ColorSensor(Port.S2)                     # used for band detection
 ultrasonic_sensor = UltrasonicSensor(Port.S4)           # used for obstacle detection
 gyro_sensor  = GyroSensor(Port.S1)                      # used for navigation via drive_base
-touch_sensor = TouchSensor(Port.S3)                   # used for wall alignment?
+touch_sensor = TouchSensor(Port.S3)                     # used for wall alignment
 
-
-# Create precision module
+# Setup precision module
 precision_module = PrecisionModule(
     left_motor,
     right_motor,
     drive_base,
-    straight_speed,
-    straight_acceleration,
-    turn_rate,
-    turn_acceleration,
+    STRAIGHT_SPEED,
+    STRAIGHT_ACCELERATION,
+    TURN_RATE,
+    TURN_ACCELERATION,
     gyro_sensor
 )
 
@@ -253,12 +246,11 @@ def main():
 
 
 main()
-# color_field = ColorField(drive_base, color_sensor, ultrasonic_sensor, touch_sensor,)
-#  color_field.run()
+
+
 
 # TODO
-#   - precision_module testen
-#   - neu kalibrieren (gewicht verschieben?)
+#   - (precision_module testen)
 #   - greifarm aktuieren
 #   - brücke
 #   - linien folgen
