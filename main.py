@@ -60,7 +60,7 @@ BAR_W = 6
 
 
 class Section:
-    LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, EXIT = range(5)
+    LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, EXIT = range(6)
     ORDER = [LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, EXIT]
     NAMES = {
         LINE_FOLLOW: "Linienfolgen",
@@ -279,25 +279,6 @@ def run_debug_callibration():
 
 # ---------------------- Main Loop ----------------------
 def main():
-
-    # TODO temp entfernen
-    # precision_module.turn_gyro(10)
-    # time.sleep(3)
-    # precision_module.turn_gyro(-10)
-    # time.sleep(3)
-    # precision_module.turn_gyro(45)
-    # time.sleep(3)
-    # precision_module.turn_gyro(-45)
-    # time.sleep(3)
-    # precision_module.turn_gyro(90)
-    # time.sleep(3)
-    # precision_module.turn_gyro(-90)
-    # time.sleep(3)
-    # precision_module.turn_gyro(360)
-    # time.sleep(3)
-    # precision_module.turn_gyro(-360)
-
-
     current = menu_select(0)
 
     if current is None:  # LEFT button pressed in menu

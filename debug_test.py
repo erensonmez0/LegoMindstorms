@@ -1,3 +1,5 @@
+import time
+
 from pybricks.ev3devices import Motor, ColorSensor, UltrasonicSensor, TouchSensor
 from pybricks.hubs import EV3Brick
 from pybricks.robotics import DriveBase
@@ -17,4 +19,18 @@ class DebugTest:
         self.touch_sensor = touch_sensor
 
     def run(self):
-        pass
+        self.precision_module.turn_gyro(10)
+        time.sleep(3)
+        self.precision_module.turn_gyro(-10)
+        time.sleep(3)
+        self.precision_module.turn_gyro(45)
+        time.sleep(3)
+        self.precision_module.turn_gyro(-45)
+        time.sleep(3)
+        self.precision_module.turn_gyro(90)
+        time.sleep(3)
+        self.precision_module.turn_gyro(-90)
+        time.sleep(3)
+        self.precision_module.turn_gyro(360)
+        time.sleep(3)
+        self.precision_module.turn_gyro(-360)
