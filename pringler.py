@@ -6,6 +6,8 @@ from config import BLUE, DISTANCE_TO_BRIDGE_START, TURN_LEFT
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
 
+import time
+
 
 class Pringler:
     def __init__(self, drive_base:DriveBase, arm_motor:Motor, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor, precision_module:PrecisionModule,touch_sensor:TouchSensor):
