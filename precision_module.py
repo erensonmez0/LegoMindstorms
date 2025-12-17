@@ -4,6 +4,8 @@ from time import sleep
 from pybricks.ev3devices import Motor, GyroSensor
 from pybricks.robotics import DriveBase
 
+from config import *
+
 
 class PrecisionModule:
 
@@ -40,6 +42,35 @@ class PrecisionModule:
         self.turn_rate = turn_rate
         self.turn_acceleration = turn_acceleration
         self.gyro_sensor = gyro_sensor
+
+    def change_straight_speed(self, new_speed, new_acceleration=None):
+        """
+        Set new Speed (and optional acceleration) for whole class and underlying drive base.
+        :param new_speed: New value for speed
+        :param new_acceleration: Optional value for acceleration
+        """
+        if new_acceleration:
+            self.drive_base.settings(new_speed, new_acceleration, TURN_RATE, TURN_ACCELERATION)
+            self.settings(new_speed, new_acceleration, TURN_RATE, TURN_ACCELERATION)
+        else:
+            self.drive_base.settings(new_speed, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
+            self.settings(new_speed, STRAIGHT_ACCELERATION, TURN_RATE, TURN_ACCELERATION)
+
+    def get_straight_speed(self):
+        return self.straight_speed, self.straight_acceleration
+
+    def change_turn_speed(self, new_turn_rate, new_turn_acceleration=None):
+        """
+            Set new turn speed (and optional turn acceleration) for whole class and underlying drive base.
+            :param new_turn_rate: New value for turn rate
+            :param new_turn_acceleration: Optional value for turn acceleration
+            """
+        if new_turn_acceleration:
+            self.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
+            self.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
+        else:
+            self.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
+            self.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
 
 
     def settings(
@@ -142,7 +173,7 @@ class PrecisionModule:
         speed = self.turn_rate
 
         # angle correction
-        angle = angle * 0.985
+        angle = angle * 1.04
 
         self.gyro_sensor.reset_angle(0)
         if angle < 0:
