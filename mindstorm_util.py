@@ -20,4 +20,3 @@ class MindsStormUtil:
         return ((-threshold < (color_sensor.rgb()[0] - color_value[0]) < threshold)
                 and (-threshold < (color_sensor.rgb()[1] - color_value[1]) < threshold)
                 and (-threshold < (color_sensor.rgb()[2] - color_value[2]) < threshold))
-

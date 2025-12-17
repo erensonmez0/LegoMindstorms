@@ -56,8 +56,6 @@ class Pringler:
 
 
 
-
-        
     def run(self):
         distance_from_end = 800
         distance_from_pring = 40
@@ -73,8 +71,3 @@ class Pringler:
         self.precision_module.straight_gyro(-100)
         self.drive_base.drive(0,10000)
         self.prep_for_bridge()
-
-
-        
-
-

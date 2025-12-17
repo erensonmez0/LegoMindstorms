@@ -257,5 +257,3 @@ main()
 #   - farbfinden
 #   - pringler
 #
-
-

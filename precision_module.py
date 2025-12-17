@@ -43,8 +43,6 @@ class PrecisionModule:
 
 
 
-
-# TODO find good values for sleep.
     def straight_gyro_with_condition(
             self, distance: int, condition_to_check
     ) -> None:
@@ -124,9 +122,3 @@ class PrecisionModule:
 
         self.right_motor.brake()
         self.left_motor.brake()
-
-
-
-
-
-
