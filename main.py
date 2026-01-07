@@ -315,7 +315,6 @@ main()
 
 
 # TODO
-#   - precision_module testen -> straight und turn
 #   - farbfinden -> anfang
 #   - pringler  -> greifen
 #   - Übergang brücke farbfeld

@@ -37,10 +37,10 @@ class Bridge:
         self.precision_module.straight_gyro(RAMP_UP)
         self.precision_module.turn_gyro(TURN_LEFT)
         self.precision_module.straight_gyro(BRIDGE_LENGTH)
-        self.precision_module.turn_gyro(TURN_LEFT)
-        self.precision_module.straight_gyro(RAMP_DOWN)
+        self.precision_module.turn_gyro(TURN_RIGHT)
+        self.precision_module.straight_gyro(-RAMP_DOWN)
 
     def run(self):
         self.align_start()
-        sleep(2.5)
+        sleep(1)
         self.drive_bridge()
