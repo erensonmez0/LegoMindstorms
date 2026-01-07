@@ -61,13 +61,13 @@ BAR_W = 6
 
 class Section:
     LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, EXIT = range(6)
-    ORDER = [LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, RUN_COURSE, EXIT]
+    ORDER = [ DEBUG,LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, EXIT]
     NAMES = {
+        DEBUG: "Debug",
         LINE_FOLLOW: "Linienfolgen",
         PRINGLER: "Pringler",
         BRIDGE: "Brücke",
         COLOR_FIELD: "Farbfeldsuche",
-        DEBUG: "Debug",
         EXIT: "Beenden",
     }
 
@@ -291,6 +291,8 @@ def main():
             ev3.screen.clear()
             ev3.screen.print("Programm beendet.")
             break
+        elif current == Section.DEBUG:
+            run_debug_callibration()
         elif current == Section.LINE_FOLLOW:
             run_line_follow()
         elif current == Section.PRINGLER:
@@ -299,13 +301,7 @@ def main():
             run_bridge()
         elif current == Section.COLOR_FIELD:
             run_color_field()
-        elif current == Section.DEBUG:
-            run_debug_callibration()  
-        elif current == Section.RUN_COURSE:
-            run_line_follow()
-            run_pringler()
-            run_bridge()
-            run_color_field()  
+
 
         current = menu_select(Section.ORDER.index(current))
 

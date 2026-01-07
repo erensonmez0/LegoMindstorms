@@ -21,4 +21,14 @@ class DebugTest:
     def run(self):
         
 
-        self.precision_module.straight_gyro(1000)
+        # self.precision_module.straight_gyro(500)
+
+        self.arm_motor.run_target(500, 300)
+        self.arm_motor.stop()
+        time.sleep(3)
+        self.arm_motor.run_target(500, 390)
+        self.arm_motor.stop()
+        time.sleep(3)
+        self.precision_module.straight_gyro(-100)
+        self.arm_motor.run_target(500, -5)
+        self.arm_motor.stop()
