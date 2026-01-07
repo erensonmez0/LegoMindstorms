@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
+from time import sleep
+
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor, TouchSensor
 from pybricks.parameters import Port
 from pybricks.robotics import DriveBase
+
+from config import *
+from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
 import time
 
@@ -18,8 +23,8 @@ class ColorField:
     DRIVE_SPEED = 200
     
     ALIGN = -10  # Small backward steps for wall alignment
-    DISTANCE_TO_START = 80  # Distance from wall to starting position
-    INITIAL_STRAIGHT = 200  # Distance to drive straight at the beginning
+    DISTANCE_TO_START = 50  # Distance from wall to starting position
+    INITIAL_STRAIGHT = -50  # Distance to drive straight at the beginning
 
     def __init__(self, drive_base: DriveBase, color_sensor: ColorSensor, 
                  ultrasonic_sensor: UltrasonicSensor, touch_sensor: TouchSensor,
@@ -39,51 +44,62 @@ class ColorField:
         """Align against right wall using touch sensor"""
         ev3 = EV3Brick()
         
-        print("Starting alignment...")
-        ev3.speaker.beep(500, 200)
+        # print("Starting alignment...")
+        # ev3.speaker.beep(500, 200)
         
         # Drive straight at the beginning
-        print("Driving straight...")
-        self.precision_module.straight_gyro(self.INITIAL_STRAIGHT)
+        # print("Driving straight...")
+        self.precision_module.straight_gyro(-200)
         time.sleep(1.0)
         
         # Turn LEFT to face the wall
-        print("Turning left to wall...")
-        self.precision_module.turn_gyro(-90)
+        # print("Turning left to wall...")
+        self.precision_module.turn_gyro(20)
+        self.precision_module.straight_gyro(50)
+        self.precision_module.turn_gyro(70)
         time.sleep(1.0)
         
         # Drive backwards until touching the wall or max attempts
-        print("Backing up to wall...")
-        max_counter = 20
-        while (not self.touch_sensor.pressed()) and (max_counter > 0):
-            self.precision_module.straight_gyro(self.ALIGN)
-            time.sleep(0.5)
-            max_counter = max_counter - 1
-        
-        print("Wall contact: {self.touch_sensor.pressed()}, attempts left: {max_counter}")
-        time.sleep(0.5)
+        # print("Backing up to wall...")
+        # max_counter = 20
+        # while (not self.touch_sensor.pressed()) and (max_counter > 0):
+        #     self.precision_module.straight_gyro(self.ALIGN)
+        #     time.sleep(0.5)
+        #     max_counter = max_counter - 1
+        #
+        # print("Wall contact: {self.touch_sensor.pressed()}, attempts left: {max_counter}")
+        # time.sleep(0.5)
+
+        # save current speed and change to slow
+        temp_speed = self.precision_module.straight_speed
+        self.precision_module.change_straight_speed(STRAIGHT_SPEED_SLOW)
+
+        self.precision_module.straight_gyro_with_condition(-80, lambda:(self.touch_sensor.pressed()))
+
+        # change current speed back to original value
+        self.precision_module.change_straight_speed(temp_speed)
+
         
         # Drive forward to create distance from wall
-        print("Creating distance from wall...")
-        self.precision_module.straight_gyro(self.DISTANCE_TO_START)
+        # print("Creating distance from wall...")
+        self.precision_module.straight_gyro(40)
         time.sleep(1.0)
         
         # Turn RIGHT to face forward
-        print("Turning right to start position...")
-        self.precision_module.turn_gyro(90)
+        # print("Turning right to start position...")
+        self.precision_module.turn_gyro(TURN_RIGHT)
         time.sleep(1.0)
         
-        print("Positioning complete! Starting search...")
-        ev3.speaker.beep(1500, 200)
+        # print("Positioning complete! Starting search...")
+        # ev3.speaker.beep(1500, 200)
         
         self.positioned = True
-        
-    def run(self):
-        ev3 = EV3Brick()
 
-        # Do initial positioning ONCE
-        if not self.positioned:
-            self.initial_positioning()
+
+
+
+    def spiral(self):
+        ev3 = EV3Brick()
 
         print("Starting main search loop...")
         
@@ -112,7 +128,7 @@ class ColorField:
             # Check if wall detected with current threshold
             if distance < self.current_threshold:
                 print("Wall detected at {distance}mm (threshold: {self.current_threshold}mm)")
-                self.avoid_obstacle()
+                self.turn_in_spiral()
             else:
                 # Continue forward
                 self.drive_base.drive(self.DRIVE_SPEED, 0)
@@ -120,7 +136,7 @@ class ColorField:
             time.sleep(0.05)
             
 
-    def avoid_obstacle(self):
+    def turn_in_spiral(self):
         ev3 = EV3Brick()
 
         # Stop current motion
@@ -147,3 +163,66 @@ class ColorField:
             ev3.speaker.beep(800, 100)
         
         time.sleep(0.5)
+
+
+
+
+    def zickzack(self):
+        ev3 = EV3Brick()
+        offset = 30
+        found_red = False
+        found_white = False
+        turn_counter = 0
+        distance_to_wall = 120
+        distance = 900
+
+        self.precision_module.change_straight_speed(STRAIGHT_SPEED_SLOW)
+
+        while not (found_red and found_white):
+            sleep(1)
+            self.precision_module.straight_gyro_with_condition(
+                distance,
+                lambda: ((MindsStormUtil.check_color(self.color_sensor, RED))
+                        or (MindsStormUtil.check_color(self.color_sensor, WHITE))
+                        or (self.ultrasonic_sensor.distance() < distance_to_wall))
+            )
+            if MindsStormUtil.check_color(self.color_sensor, RED):
+                found_red = True
+                ev3.speaker.beep(1000, 200)
+                sleep(3)
+                self.precision_module.straight_gyro(50)
+                continue
+            elif MindsStormUtil.check_color(self.color_sensor, WHITE):
+                found_white = True
+                ev3.speaker.beep(1500, 200)
+                sleep(3)
+                self.precision_module.straight_gyro(50)
+                continue
+
+            if turn_counter % 2 == 0:
+                self.precision_module.turn_gyro(TURN_LEFT)
+                self.precision_module.straight_gyro(offset)
+                self.precision_module.turn_gyro(TURN_LEFT)
+            elif turn_counter % 2 == 1:
+                self.precision_module.turn_gyro(TURN_RIGHT)
+                self.precision_module.straight_gyro(offset)
+                self.precision_module.turn_gyro(TURN_RIGHT)
+
+            turn_counter = turn_counter + 1
+
+        ev3.speaker.beep(2000, 500)
+
+
+
+
+
+    def run(self):
+        # Do initial positioning ONCE
+        if not self.positioned:
+            self.initial_positioning()
+        sleep(3)
+        # self.spiral()
+        self.zickzack()
+
+
+
