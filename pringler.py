@@ -19,17 +19,17 @@ class Pringler:
         self.touch_sensor = touch_sensor
 
     def grab(self):
-        self.arm_motor.run_target(500,470)
+        self.arm_motor.run_target(500,400)
 
     def initiate_hug_mode(self):
-        self.arm_motor.run_target(500,380)
+        self.arm_motor.run_target(500,300)
 
     def disengage(self):
-        self.arm_motor.run_target(500,-200)
+        self.arm_motor.run_target(500,-5)
 
     def initialise(self):
         self.drive_base.straight(200)
-        distance_from_wall = 100
+        distance_from_wall = 150
         #go against wall and set distance
         self.drive_base.turn(-90)
 
@@ -55,8 +55,10 @@ class Pringler:
     def run(self):
         distance_from_end = 650
         distance_from_pring = 40
+    
         distance_from_square = -550
         self.initialise()
+        self.precision_module.straight_gyro(800)
         self.precision_module.straight_gyro_with_condition(10000, lambda:self.ultrasonic_sensor.distance()<=distance_from_end)
         self.precision_module.turn_gyro(45)
         self.initiate_hug_mode()
@@ -66,5 +68,7 @@ class Pringler:
         self.precision_module.straight_gyro(distance_from_square)
         self.disengage()
         self.precision_module.straight_gyro(-100)
-        self.drive_base.drive(0,10000)
+        self.drive_base.drive(0,10000)   
+        
+        
         self.prep_for_bridge()

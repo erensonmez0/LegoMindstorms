@@ -19,20 +19,6 @@ class DebugTest:
         self.touch_sensor = touch_sensor
 
     def run(self):
-        # self.precision_module.turn_gyro(10)
-        # time.sleep(3)
-        # self.precision_module.turn_gyro(-10)
-        # time.sleep(3)
-        # self.precision_module.turn_gyro(45)
-        # time.sleep(3)
-        # self.precision_module.turn_gyro(-45)
-        # time.sleep(3)
-        # self.precision_module.turn_gyro(90)
-        # time.sleep(3)
-        # self.precision_module.turn_gyro(-90)
-        # time.sleep(3)
-        # self.precision_module.turn_gyro(360)
-        # time.sleep(3)
-        # self.precision_module.turn_gyro(-360)
+        
 
-        self.precision_module.straight_gyro(500)
+        self.precision_module.straight_gyro(1000)
