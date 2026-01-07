@@ -5,6 +5,7 @@ from pybricks.robotics import DriveBase
 from config import BLUE, DISTANCE_TO_BRIDGE_START, TURN_LEFT
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
+from bridge import Bridge
 
 import time
 
@@ -19,10 +20,10 @@ class Pringler:
         self.touch_sensor = touch_sensor
 
     def grab(self):
-        self.arm_motor.run_target(500,400)
+        self.arm_motor.run_target(500,430)
 
     def initiate_hug_mode(self):
-        self.arm_motor.run_target(500,300)
+        self.arm_motor.run_target(500,320)
 
     def disengage(self):
         self.arm_motor.run_target(500,-5)
@@ -46,10 +47,21 @@ class Pringler:
         self.precision_module.straight_gyro(-100)
         self.precision_module.turn_gyro(-135)
         self.precision_module.straight_gyro_with_condition(-2000, lambda:(self.touch_sensor.pressed()))
+        # save current speed and change to slow
+        temp_speed = self.precision_module.straight_speed
+        self.precision_module.change_straight_speed(STRAIGHT_SPEED_SLOW)
+
+        # drive backwards till touching the wall
+        self.precision_module.straight_gyro_with_condition(-300, lambda:(self.touch_sensor.pressed()))
+
+        # drive to startpoint of ramp
         self.precision_module.straight_gyro(DISTANCE_TO_BRIDGE_START)
         self.precision_module.turn_gyro(TURN_LEFT)
 
-        self.precision_module.straight_gyro_with_condition(3000, lambda:MindsStormUtil.check_color(self.color_sensor, BLUE))
+        self.precision_module.straight_gyro_with_condition(300, lambda:MindsStormUtil.check_color(self.color_sensor, BLUE))
+
+        # change current speed back to original value
+        self.precision_module.change_straight_speed(temp_speed)
 
 
     def run(self):

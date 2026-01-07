@@ -61,7 +61,7 @@ BAR_W = 6
 
 class Section:
     LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, EXIT = range(6)
-    ORDER = [LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, EXIT]
+    ORDER = [LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, RUN_COURSE, EXIT]
     NAMES = {
         LINE_FOLLOW: "Linienfolgen",
         PRINGLER: "Pringler",
@@ -300,7 +300,12 @@ def main():
         elif current == Section.COLOR_FIELD:
             run_color_field()
         elif current == Section.DEBUG:
-            run_debug_callibration()    
+            run_debug_callibration()  
+        elif current == Section.RUN_COURSE:
+            run_line_follow()
+            run_pringler()
+            run_bridge()
+            run_color_field()  
 
         current = menu_select(Section.ORDER.index(current))
 
