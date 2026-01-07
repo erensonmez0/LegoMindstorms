@@ -303,9 +303,13 @@ def main():
         elif current == Section.COLOR_FIELD:
             run_color_field()
         elif current == Section.RUN_COURSE:
+            ev3.screen.print("Following Line")
             run_line_follow()
+            ev3.screen.print("Pringling")
             run_pringler()
+            ev3.screen.print("Bridge")
             run_bridge()
+            ev3.screen.print("Color Field")
             run_color_field()
 
 
