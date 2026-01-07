@@ -60,15 +60,16 @@ BAR_W = 6
 
 
 class Section:
-    LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, EXIT = range(6)
-    ORDER = [ DEBUG,LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, EXIT]
+    LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, RUN_COURSE, EXIT = range(7)
+    ORDER = [ DEBUG,LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, RUN_COURSE, EXIT]
     NAMES = {
         DEBUG: "Debug",
         LINE_FOLLOW: "Linienfolgen",
         PRINGLER: "Pringler",
         BRIDGE: "Brücke",
         COLOR_FIELD: "Farbfeldsuche",
-        EXIT: "Beenden",
+        RUN_COURSE: "Run Course",
+        EXIT: "Beenden"
     }
 
 def wait_release():
@@ -301,6 +302,16 @@ def main():
             run_bridge()
         elif current == Section.COLOR_FIELD:
             run_color_field()
+        elif current == Section.RUN_COURSE:
+            ev3.screen.print("Following Line")
+            run_line_follow()
+            ev3.screen.print("Pringling")
+            run_pringler()
+            ev3.screen.print("Bridge")
+            run_bridge()
+            ev3.screen.print("Color Field")
+            run_color_field()
+
 
 
         current = menu_select(Section.ORDER.index(current))
