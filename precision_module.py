@@ -127,7 +127,6 @@ class PrecisionModule:
             :param distance: Distance to travel in mm
             :param condition_to_check: Will continuously check this condition (please give as "lambda:") and abort if true
         """
-        # robotSpeed = self.straight_speed
         min_speed = 50
 
         self.drive_base.reset()
@@ -170,6 +169,38 @@ class PrecisionModule:
         self.straight_gyro_with_condition(distance, lambda: False)
 
 
+    def turn_gyro_with_condition(
+            self, angle: float,  condition_to_check
+    ) -> None:
+        """turn(angle)
+
+        Turns in place by a given angle and then stops.
+        Accuracy is increased by unsing the gyro sensor.
+
+        Arguments:
+            :param condition_to_check: Will continuously check this condition (please give as "lambda:") and abort if true
+            :param angle: Angle of the turn in degree.
+        """
+        min_speed = 50
+
+        # angle correction
+        angle = angle * 1
+
+        self.gyro_sensor.reset_angle(0)
+        if angle < 0:
+            while self.gyro_sensor.angle() > angle and not condition_to_check():
+                speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
+                self.right_motor.run(speed=(-1 * speed))
+                self.left_motor.run(speed=speed)
+        elif angle > 0:
+            while self.gyro_sensor.angle() < angle and not condition_to_check():
+                speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
+                self.right_motor.run(speed=speed)
+                self.left_motor.run(speed=(-1 * speed))
+
+        self.right_motor.brake()
+        self.left_motor.brake()
+
     def turn_gyro(
             self, angle: float
     ) -> None:
@@ -181,29 +212,4 @@ class PrecisionModule:
         Arguments:
             :param angle: Angle of the turn in degree.
         """
-        # speed = self.turn_rate
-        min_speed = 50
-
-        # angle correction
-        angle = angle * 1
-
-        self.gyro_sensor.reset_angle(0)
-        if angle < 0:
-            while self.gyro_sensor.angle() > angle:
-                speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
-                # print(2)
-                # print(speed)
-                # print(self.gyro_sensor.angle())
-                self.right_motor.run(speed=(-1 * speed))
-                self.left_motor.run(speed=speed)
-        elif angle > 0:
-            while self.gyro_sensor.angle() < angle:
-                speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
-                # print(1)
-                # print(speed)
-                # print(self.gyro_sensor.angle())
-                self.right_motor.run(speed=speed)
-                self.left_motor.run(speed=(-1 * speed))
-
-        self.right_motor.brake()
-        self.left_motor.brake()
+        self.turn_gyro_with_condition(angle, lambda: False)
