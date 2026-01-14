@@ -33,8 +33,8 @@ class DebugTest:
         # self.arm_motor.run_target(500, -5)
         # self.arm_motor.stop()
 
-        while True:
-            print(self.color_sensor.rgb())
-            print(MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3))
+        ev3.speaker.set_volume(100, '_all_')
+        ev3.speaker.play_file('/home/robot/LegoMindstorms/goodresult82807.wav')
+        ev3.speaker.play_file('/home/robot/LegoMindstorms/boing.wav')
 
         #     time.sleep(1)
