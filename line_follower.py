@@ -40,7 +40,7 @@ class LineFollower:
         # Start following the line endlessly.
         while not MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3):
             self.PROPORTIONAL_GAIN = 2
-            self.DRIVE_SPEED += 1
+            self.DRIVE_SPEED += 3
 
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
