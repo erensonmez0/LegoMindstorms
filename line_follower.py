@@ -107,7 +107,7 @@ class LineFollower:
                 return
                         
             self.drive_base.straight(100)
-            if self.color_sensor.reflection()>self.PHRESHOLD:
+            if self.color_sensor.reflection()>=self.THRESHOLD:
                 return
 
 
