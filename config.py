@@ -7,7 +7,7 @@ BLUE = (2, 17, 17)
 RED = (6, 3, 0)
 
 # Bridge values
-RAMP_UP = 970           #todo find good value
+RAMP_UP = 990           #todo find good value
 TURN_LEFT = -90
 TURN_RIGHT = 90
 BRIDGE_LENGTH = 1200
