@@ -19,7 +19,7 @@ class DebugTest:
         self.touch_sensor = touch_sensor
 
     def run(self):
-        
+        ev3 = EV3Brick()
 
         # self.precision_module.straight_gyro(500)
 
@@ -32,6 +32,9 @@ class DebugTest:
         # self.precision_module.straight_gyro(-100)
         # self.arm_motor.run_target(500, -5)
         # self.arm_motor.stop()
-        while True:
-            print(self.color_sensor.rgb())
-            time.sleep(1)
+
+        # ev3.speaker.play_file('/home/robot/LegoMindstorms/goodresult-82807.mp3')
+
+        # while True:
+        #     print(self.color_sensor.rgb())
+        #     time.sleep(1)
