@@ -82,7 +82,7 @@ class ColorField:
         
         # Drive forward to create distance from wall
         # print("Creating distance from wall...")
-        self.precision_module.straight_gyro(40)
+        self.precision_module.straight_gyro(70)
         time.sleep(1.0)
         
         # Turn RIGHT to face forward
@@ -98,71 +98,71 @@ class ColorField:
 
 
 
-    def spiral(self):
-        ev3 = EV3Brick()
-
-        print("Starting main search loop...")
-        
-        while not (self.red_found and self.white_found):
-            light = self.color_sensor.reflection()
-
-            # Detect colors
-            if abs(light - self.RED) < 4 and not self.red_found:
-                self.red_found = True
-                ev3.speaker.beep(1000, 200)
-                print("*** RED FOUND! ***")
-
-            if abs(light - self.WHITE) < 4 and not self.white_found:
-                self.white_found = True
-                ev3.speaker.beep(1500, 200)
-                print("*** WHITE FOUND! ***")
-
-            if self.red_found and self.white_found:
-                self.drive_base.stop()
-                ev3.speaker.beep(2000, 500)
-                print("=== BOTH COLORS FOUND! MISSION COMPLETE! ===")
-                break
-
-            distance = self.ultrasonic_sensor.distance()
-            
-            # Check if wall detected with current threshold
-            if distance < self.current_threshold:
-                print("Wall detected at {distance}mm (threshold: {self.current_threshold}mm)")
-                self.turn_in_spiral()
-            else:
-                # Continue forward
-                self.drive_base.drive(self.DRIVE_SPEED, 0)
-
-            time.sleep(0.05)
-            
-
-    def turn_in_spiral(self):
-        ev3 = EV3Brick()
-
-        # Stop current motion
-        self.drive_base.stop()
-        time.sleep(0.5)
-
-        # Turn LEFT 90 degrees
-        print("Turning left...")
-        self.precision_module.turn_gyro(-90)
-        
-        time.sleep(1.0)
-        
-        # Increment turn counter
-        self.turn_count += 1
-        
-        print("=== Turn #{self.turn_count}, threshold: {self.current_threshold}mm ===")
-        
-        # Every 4 turns, DECREASE the wall threshold (narrow the area)
-        if self.turn_count % 4 == 0:
-            self.current_threshold -= self.THRESHOLD_DECREASE
-            if self.current_threshold < 40:
-                self.current_threshold = 40
-            print("*** NARROWING! New threshold: {self.current_threshold}mm ***")
-            ev3.speaker.beep(800, 100)
-        
-        time.sleep(0.5)
+    # def spiral(self):
+    #     ev3 = EV3Brick()
+    #
+    #     print("Starting main search loop...")
+    #
+    #     while not (self.red_found and self.white_found):
+    #         light = self.color_sensor.reflection()
+    #
+    #         # Detect colors
+    #         if abs(light - self.RED) < 4 and not self.red_found:
+    #             self.red_found = True
+    #             ev3.speaker.beep(1000, 200)
+    #             print("*** RED FOUND! ***")
+    #
+    #         if abs(light - self.WHITE) < 4 and not self.white_found:
+    #             self.white_found = True
+    #             ev3.speaker.beep(1500, 200)
+    #             print("*** WHITE FOUND! ***")
+    #
+    #         if self.red_found and self.white_found:
+    #             self.drive_base.stop()
+    #             ev3.speaker.beep(2000, 500)
+    #             print("=== BOTH COLORS FOUND! MISSION COMPLETE! ===")
+    #             break
+    #
+    #         distance = self.ultrasonic_sensor.distance()
+    #
+    #         # Check if wall detected with current threshold
+    #         if distance < self.current_threshold:
+    #             print("Wall detected at {distance}mm (threshold: {self.current_threshold}mm)")
+    #             self.turn_in_spiral()
+    #         else:
+    #             # Continue forward
+    #             self.drive_base.drive(self.DRIVE_SPEED, 0)
+    #
+    #         time.sleep(0.05)
+    #
+    #
+    # def turn_in_spiral(self):
+    #     ev3 = EV3Brick()
+    #
+    #     # Stop current motion
+    #     self.drive_base.stop()
+    #     time.sleep(0.5)
+    #
+    #     # Turn LEFT 90 degrees
+    #     print("Turning left...")
+    #     self.precision_module.turn_gyro(-90)
+    #
+    #     time.sleep(1.0)
+    #
+    #     # Increment turn counter
+    #     self.turn_count += 1
+    #
+    #     print("=== Turn #{self.turn_count}, threshold: {self.current_threshold}mm ===")
+    #
+    #     # Every 4 turns, DECREASE the wall threshold (narrow the area)
+    #     if self.turn_count % 4 == 0:
+    #         self.current_threshold -= self.THRESHOLD_DECREASE
+    #         if self.current_threshold < 40:
+    #             self.current_threshold = 40
+    #         print("*** NARROWING! New threshold: {self.current_threshold}mm ***")
+    #         ev3.speaker.beep(800, 100)
+    #
+    #     time.sleep(0.5)
 
 
 
@@ -173,9 +173,10 @@ class ColorField:
         found_red = False
         found_white = False
         turn_counter = 0
-        distance_to_wall = 120
-        distance = 900
+        distance_to_wall = 140  #TODO find correct value
+        distance = 850          #TODO find correct value
         color_threshold = 4
+        distance_after_sucessfull_find = 70
 
         self.precision_module.change_straight_speed(STRAIGHT_SPEED_SLOW)
 
@@ -187,17 +188,23 @@ class ColorField:
                         or (MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold))
                         or (self.ultrasonic_sensor.distance() < distance_to_wall))
             )
-            if MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white:
+            if MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and not found_red:
                 found_red = True
                 ev3.speaker.beep(1000, 200)
                 # sleep(3)
-                self.precision_module.straight_gyro(50)
+                self.precision_module.straight_gyro(distance_after_sucessfull_find)
                 continue
-            elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red:
+            elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red  and not found_white:
                 found_white = True
                 ev3.speaker.beep(1500, 200)
                 # sleep(3)
-                self.precision_module.straight_gyro(50)
+                self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                continue
+            elif MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and found_red:
+                self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                continue
+            elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red and found_white:
+                self.precision_module.straight_gyro(distance_after_sucessfull_find)
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and found_white:
                 break
@@ -229,7 +236,7 @@ class ColorField:
         # Do initial positioning ONCE
         if not self.positioned:
             self.initial_positioning()
-        sleep(3)
+        # sleep(3)
         # self.spiral()
         self.zickzack()
 

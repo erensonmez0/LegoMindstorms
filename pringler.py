@@ -53,6 +53,8 @@ class Pringler:
 
         # drive backwards till touching the wall
         self.precision_module.straight_gyro_with_condition(-300, lambda:(self.touch_sensor.pressed()))
+        self.precision_module.straight_gyro(50)
+        self.precision_module.straight_gyro_with_condition(-60, lambda: (self.touch_sensor.pressed()))
 
         # drive to startpoint of ramp
         self.precision_module.straight_gyro(DISTANCE_TO_BRIDGE_START)
