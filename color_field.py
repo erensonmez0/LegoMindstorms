@@ -173,9 +173,10 @@ class ColorField:
         found_red = False
         found_white = False
         turn_counter = 0
-        distance_to_wall = 120
+        distance_to_wall = 140  #TODO find correct value
         distance = 850          #TODO find correct value
         color_threshold = 4
+        distance_after_sucessfull_find = 70
 
         self.precision_module.change_straight_speed(STRAIGHT_SPEED_SLOW)
 
@@ -187,17 +188,23 @@ class ColorField:
                         or (MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold))
                         or (self.ultrasonic_sensor.distance() < distance_to_wall))
             )
-            if MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white:
+            if MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and not found_red:
                 found_red = True
                 ev3.speaker.beep(1000, 200)
                 # sleep(3)
-                self.precision_module.straight_gyro(50)
+                self.precision_module.straight_gyro(distance_after_sucessfull_find)
                 continue
-            elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red:
+            elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red  and not found_white:
                 found_white = True
                 ev3.speaker.beep(1500, 200)
                 # sleep(3)
-                self.precision_module.straight_gyro(50)
+                self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                continue
+            elif MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and found_red:
+                self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                continue
+            elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red and found_white:
+                self.precision_module.straight_gyro(distance_after_sucessfull_find)
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and found_white:
                 break
