@@ -34,7 +34,9 @@ class Pringler:
         #go against wall and set distance
         self.drive_base.turn(-90)
 
-        self.precision_module.straight_gyro_with_condition(-100, lambda:(self.touch_sensor.pressed()))
+        self.precision_module.straight_gyro_with_condition(-200, lambda:(self.touch_sensor.pressed()))
+        self.precision_module.straight_gyro(50)
+        self.precision_module.straight_gyro_with_condition(-60, lambda: (self.touch_sensor.pressed()))
         if self.ultrasonic_sensor.distance()>distance_from_wall:
             self.precision_module.straight_gyro_with_condition(200, lambda:(self.ultrasonic_sensor.distance()==distance_from_wall))
         elif self.ultrasonic_sensor.distance()<distance_from_wall:

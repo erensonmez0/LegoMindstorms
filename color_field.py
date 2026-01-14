@@ -38,7 +38,6 @@ class ColorField:
         self.white_found = False
         self.turn_count = 0
         self.current_threshold = self.INITIAL_WALL_THRESHOLD
-        self.positioned = False
 
     def initial_positioning(self):
         """Align against right wall using touch sensor"""
@@ -70,16 +69,8 @@ class ColorField:
         # print("Wall contact: {self.touch_sensor.pressed()}, attempts left: {max_counter}")
         # time.sleep(0.5)
 
-        # save current speed and change to slow
-        temp_speed = self.precision_module.straight_speed
-        self.precision_module.change_straight_speed(STRAIGHT_SPEED_SLOW)
+        self.align_backwards(-80)
 
-        self.precision_module.straight_gyro_with_condition(-80, lambda:(self.touch_sensor.pressed()))
-
-        # change current speed back to original value
-        self.precision_module.change_straight_speed(temp_speed)
-
-        
         # Drive forward to create distance from wall
         # print("Creating distance from wall...")
         self.precision_module.straight_gyro(70)
@@ -92,8 +83,16 @@ class ColorField:
         
         # print("Positioning complete! Starting search...")
         # ev3.speaker.beep(1500, 200)
-        
-        self.positioned = True
+
+    def align_backwards(self, distance):
+        # save current speed and change to slow
+        temp_speed = self.precision_module.straight_speed
+        self.precision_module.change_straight_speed(STRAIGHT_SPEED_SLOW)
+
+        self.precision_module.straight_gyro_with_condition(distance, lambda: (self.touch_sensor.pressed()))
+
+        # change current speed back to original value
+        self.precision_module.change_straight_speed(temp_speed)
 
 
 
@@ -178,7 +177,7 @@ class ColorField:
         color_threshold = 4
         distance_after_sucessfull_find = 70
 
-        self.precision_module.change_straight_speed(STRAIGHT_SPEED_SLOW)
+        self.precision_module.change_straight_speed(STRAIGHT_SPEED_FAST)
 
         while not (found_red and found_white):
             # sleep(1)
@@ -191,13 +190,11 @@ class ColorField:
             if MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and not found_red:
                 found_red = True
                 ev3.speaker.beep(1000, 200)
-                # sleep(3)
                 self.precision_module.straight_gyro(distance_after_sucessfull_find)
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red  and not found_white:
                 found_white = True
                 ev3.speaker.beep(1500, 200)
-                # sleep(3)
                 self.precision_module.straight_gyro(distance_after_sucessfull_find)
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and found_red:
@@ -215,6 +212,9 @@ class ColorField:
                 self.precision_module.turn_gyro(TURN_LEFT)
                 self.precision_module.straight_gyro(offset)
                 self.precision_module.turn_gyro(TURN_LEFT)
+                self.align_backwards(-(distance_to_wall + 20))
+                self.precision_module.straight_gyro(distance_to_wall)
+
             elif turn_counter % 2 == 1:
                 self.precision_module.turn_gyro(TURN_RIGHT)
                 self.precision_module.straight_gyro(offset)
@@ -233,11 +233,7 @@ class ColorField:
 
 
     def run(self):
-        # Do initial positioning ONCE
-        if not self.positioned:
-            self.initial_positioning()
-        # sleep(3)
-        # self.spiral()
+        self.initial_positioning()
         self.zickzack()
 
 

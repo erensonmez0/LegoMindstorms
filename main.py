@@ -61,14 +61,14 @@ BAR_W = 6
 
 class Section:
     LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, RUN_COURSE, EXIT = range(7)
-    ORDER = [ DEBUG,LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, RUN_COURSE, EXIT]
+    ORDER = [ RUN_COURSE, DEBUG,LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, EXIT]
     NAMES = {
+        RUN_COURSE: "Run Course",
         DEBUG: "Debug",
         LINE_FOLLOW: "Linienfolgen",
         PRINGLER: "Pringler",
         BRIDGE: "Brücke",
         COLOR_FIELD: "Farbfeldsuche",
-        RUN_COURSE: "Run Course",
         EXIT: "Beenden"
     }
 
