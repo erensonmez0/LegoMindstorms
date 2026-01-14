@@ -44,7 +44,7 @@ class LineFollower:
 
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
-            
+            print("11")
             # ROBOT on line
             if light >= self.PHRESHOLD:               
 
@@ -70,20 +70,21 @@ class LineFollower:
                 self.search_line()
 
     def scan_turn_until_line(self, angle = 90) -> bool:
+        print(1)
         """Rotate in place and poll the color sensor until the line is found.
 
         Returns True if the line was found, False on timeout.
         debounce: number of consecutive positive reads required to accept the line (helps filter noise)
         """
-        for i in range(9):
-            self.drive_base.turn(angle=angle/9)
-            if MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3):
-                return True
-            elif self.color_sensor.reflection() >= self.THRESHOLD:
-                return True
-        self.drive_base.turn(-angle)
-            
-        return False
+        
+        print(2)
+        found = self.precision_module.turn_gyro_with_condition(angle,
+                                                                lambda: self.color_sensor.reflection() >= self.THRESHOLD or MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3))
+        print(3)
+        if not found:
+            self.precision_module.turn_gyro(-angle)
+                 
+        return found
         
     def avoid_obstacle(self):
         #implement this  :D

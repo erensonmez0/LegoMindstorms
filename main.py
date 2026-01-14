@@ -133,14 +133,15 @@ def run_line_follow(wait_for_button=True):
         line_follower = LineFollower(
             drive_base=drive_base,
             color_sensor=color_sensor,
-            ultrasonic_sensor=ultrasonic_sensor
+            ultrasonic_sensor=ultrasonic_sensor,
+            precision_module=precision_module
         )
         line_follower.run()
     except Exception as e:
         ev3.screen.clear()
-        ev3.screen.print("Error:")
+        print(e)
         ev3.screen.print(str(e))
-        wait(3000)
+        wait(8000)
 
     if wait_for_button:
         ev3.screen.clear()
