@@ -323,7 +323,7 @@ main()
 
 
 # TODO
-#   - farbfinden -> anfang
+#   - farbfinden -> zickzack, verbessern
 #   - pringler  -> greifen
 #   - Übergang brücke farbfeld
 #
