@@ -26,6 +26,7 @@ class LineFollower:
 
     def __init__(self, drive_base:DriveBase, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor):
         self.drive_base = drive_base
+        self.drive_base.settings(turn_rate=1000, turn_acceleration=10000)
         self.color_sensor = color_sensor
         self.ultrasonic_sensor = ultrasonic_sensor
         self.watch = StopWatch()
@@ -38,12 +39,13 @@ class LineFollower:
         # Start following the line endlessly.
         while not MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3):
             self.PROPORTIONAL_GAIN = 2
+            self.DRIVE_SPEED += 1
 
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
             
             # ROBOT on line
-            if light > self.PHRESHOLD:               
+            if light >= self.PHRESHOLD:               
 
                 
                 # Calculate the deviation from the threshold.
@@ -98,10 +100,10 @@ class LineFollower:
         self.DRIVE_SPEED=40
         for i in range(3):
             if self.scan_turn_until_line(-90):
-                self.drive_base.drive(0, 0)
+                self.drive_base.drive(self.DRIVE_SPEED, -70)
                 return
             elif self.scan_turn_until_line(90):
-                self.drive_base.drive(0, 0)
+                self.drive_base.drive(self.DRIVE_SPEED, 70)
                 return
                         
             self.drive_base.straight(100)
