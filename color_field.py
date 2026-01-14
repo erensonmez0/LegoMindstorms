@@ -175,6 +175,7 @@ class ColorField:
         turn_counter = 0
         distance_to_wall = 120
         distance = 900
+        color_threshold = 4
 
         self.precision_module.change_straight_speed(STRAIGHT_SPEED_SLOW)
 
@@ -182,17 +183,17 @@ class ColorField:
             sleep(1)
             self.precision_module.straight_gyro_with_condition(
                 distance,
-                lambda: ((MindsStormUtil.check_color(self.color_sensor, RED))
-                        or (MindsStormUtil.check_color(self.color_sensor, WHITE))
+                lambda: ((MindsStormUtil.check_color(self.color_sensor, RED, color_threshold))
+                        or (MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold))
                         or (self.ultrasonic_sensor.distance() < distance_to_wall))
             )
-            if MindsStormUtil.check_color(self.color_sensor, RED):
+            if MindsStormUtil.check_color(self.color_sensor, RED, color_threshold):
                 found_red = True
                 ev3.speaker.beep(1000, 200)
                 sleep(3)
                 self.precision_module.straight_gyro(50)
                 continue
-            elif MindsStormUtil.check_color(self.color_sensor, WHITE):
+            elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold):
                 found_white = True
                 ev3.speaker.beep(1500, 200)
                 sleep(3)
