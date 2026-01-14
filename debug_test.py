@@ -4,7 +4,7 @@ from pybricks.ev3devices import Motor, ColorSensor, UltrasonicSensor, TouchSenso
 from pybricks.hubs import EV3Brick
 from pybricks.robotics import DriveBase
 
-from config import BLUE, DISTANCE_TO_BRIDGE_START, TURN_LEFT
+from config import BLUE, DISTANCE_TO_BRIDGE_START, TURN_LEFT, BLUE_LINE_FOLLOW
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
 
@@ -33,8 +33,8 @@ class DebugTest:
         # self.arm_motor.run_target(500, -5)
         # self.arm_motor.stop()
 
-        ev3.speaker.play_file('/home/robot/LegoMindstorms/goodresult-82807.wav')
+        while True:
+            print(self.color_sensor.rgb())
+            print(MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3))
 
-        # while True:
-        #     print(self.color_sensor.rgb())
         #     time.sleep(1)
