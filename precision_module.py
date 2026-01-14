@@ -157,7 +157,10 @@ class PrecisionModule:
                 self.drive_base.drive(robotSpeed, angle_correction)
                 return_bool = condition_to_check()
         self.drive_base.stop()
-        return return_bool
+        if return_bool:
+            return True
+        else:
+            return False
 
 
     def straight_gyro(
@@ -210,7 +213,10 @@ class PrecisionModule:
 
         self.right_motor.brake()
         self.left_motor.brake()
-        return return_bool
+        if return_bool:
+            return True
+        else:
+            return False
 
 
     def turn_gyro(
