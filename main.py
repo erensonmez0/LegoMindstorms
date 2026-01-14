@@ -328,7 +328,8 @@ main()
 
 
 # TODO
-#   - farbfinden -> zickzack, verbessern
-#   - pringler  -> greifen
-#   - Übergang brücke farbfeld
+#   - farbfinden -> testen, change to use new precisionmodule feature
+#   -
+#   -
+#   -
 #

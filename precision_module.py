@@ -136,7 +136,7 @@ class PrecisionModule:
 
         PROPORTIONAL_GAIN = 1.1
         if distance < 0:  # move backwards
-            while (self.drive_base.distance() > distance) and not condition_to_check():
+            while (self.drive_base.distance() > distance) and not return_bool():
                 robotSpeed = min(
                     max(
                         (0.005 * self.straight_speed * abs(distance - self.drive_base.distance())),
@@ -147,7 +147,7 @@ class PrecisionModule:
                 self.drive_base.drive(reverseSpeed, angle_correction)
                 return_bool = condition_to_check()
         elif distance > 0:  # move forwards
-            while (self.drive_base.distance() < distance) and not condition_to_check():
+            while (self.drive_base.distance() < distance) and not return_bool():
                 robotSpeed = min(
                     max(
                         (0.005 * self.straight_speed * abs(distance - self.drive_base.distance())),
@@ -195,14 +195,14 @@ class PrecisionModule:
 
         self.gyro_sensor.reset_angle(0)
         if angle < 0:
-            while self.gyro_sensor.angle() > angle and not condition_to_check():
+            while self.gyro_sensor.angle() > angle and not return_bool():
                 speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
                 self.right_motor.run(speed=(-1 * speed))
                 self.left_motor.run(speed=speed)
                 return_bool = condition_to_check()
 
         elif angle > 0:
-            while self.gyro_sensor.angle() < angle and not condition_to_check():
+            while self.gyro_sensor.angle() < angle and not return_bool():
                 speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
                 self.right_motor.run(speed=speed)
                 self.left_motor.run(speed=(-1 * speed))
