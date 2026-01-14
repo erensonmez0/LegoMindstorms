@@ -14,7 +14,6 @@ import time
 class LineFollower:
     BLACK = 8
     WHITE = 42
-    BLUE = 6
     THRESHOLD = (BLACK+WHITE)/2
     PHRESHOLD = (BLACK+WHITE)/3
     PROPORTIONAL_GAIN = 1.8
@@ -33,12 +32,10 @@ class LineFollower:
 
    
     def run(self):
-        light = self.color_sensor.reflection()
-        EV3Brick().screen.clear()
         
         
         # Start following the line endlessly.
-        while not MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE):
+        while not MindsStormUtil.check_color_euclid(color_sensor=self.color_sensor, color_value=BLUE, threshold=20):
 
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
@@ -75,7 +72,9 @@ class LineFollower:
         """
         for i in range(9):
             self.drive_base.turn(angle=angle/9)
-            if self.color_sensor.reflection() >= self.THRESHOLD:
+            if MindsStormUtil.check_color_euclid(color_sensor=self.color_sensor, color_value=BLUE, threshold=10):
+                return True
+            elif self.color_sensor.reflection() >= self.THRESHOLD:
                 return True
         self.drive_base.turn(-angle)
             
@@ -95,7 +94,7 @@ class LineFollower:
 
     def search_line(self):
         self.DRIVE_SPEED=1
-        for i in range(5):
+        for i in range(3):
             if self.scan_turn_until_line(-90):
                 self.drive_base.drive(0, 0)
                 return
