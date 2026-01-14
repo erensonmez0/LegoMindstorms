@@ -2,7 +2,7 @@ from pybricks.ev3devices import Motor, ColorSensor, UltrasonicSensor, TouchSenso
 from pybricks.hubs import EV3Brick
 from pybricks.robotics import DriveBase
 
-from config import BLUE, DISTANCE_TO_BRIDGE_START, TURN_LEFT
+from config import *
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
 from bridge import Bridge
