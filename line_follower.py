@@ -6,7 +6,7 @@ from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
 from pybricks.tools import DataLog, StopWatch, wait
 from precision_module import PrecisionModule
-from config import BLUE
+from config import BLUE_LINE_FOLLOW
 from mindstorm_util import MindsStormUtil
 
 import time
@@ -16,8 +16,9 @@ class LineFollower:
     WHITE = 42
     THRESHOLD = (BLACK+WHITE)/2
     PHRESHOLD = (BLACK+WHITE)/3
-    PROPORTIONAL_GAIN = 1.8
-    DRIVE_SPEED = 70
+    PROPORTIONAL_GAIN = 2.2
+    DRIVE_SPEED = 90
+    TURN_SPEED = 10000
     INDEX = 0
     
 
@@ -35,7 +36,8 @@ class LineFollower:
         
         
         # Start following the line endlessly.
-        while not MindsStormUtil.check_color_euclid(color_sensor=self.color_sensor, color_value=BLUE, threshold=30):
+        while not MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3):
+            self.PROPORTIONAL_GAIN = 2
 
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
@@ -72,7 +74,7 @@ class LineFollower:
         """
         for i in range(9):
             self.drive_base.turn(angle=angle/9)
-            if MindsStormUtil.check_color_euclid(color_sensor=self.color_sensor, color_value=BLUE, threshold=10):
+            if MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3):
                 return True
             elif self.color_sensor.reflection() >= self.THRESHOLD:
                 return True
@@ -93,7 +95,7 @@ class LineFollower:
 
 
     def search_line(self):
-        self.DRIVE_SPEED=1
+        self.DRIVE_SPEED=40
         for i in range(3):
             if self.scan_turn_until_line(-90):
                 self.drive_base.drive(0, 0)

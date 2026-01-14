@@ -307,7 +307,7 @@ def main():
         elif current == Section.COLOR_FIELD:
             run_color_field()
         elif current == Section.RUN_COURSE:
-            # run_line_follow()
+            run_line_follow(wait_for_button=False)
             run_pringler(wait_for_button=False)
             run_bridge(wait_for_button=False)
             run_color_field(wait_for_button=False)
