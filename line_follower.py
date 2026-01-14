@@ -35,7 +35,7 @@ class LineFollower:
         
         
         # Start following the line endlessly.
-        while not MindsStormUtil.check_color_euclid(color_sensor=self.color_sensor, color_value=BLUE, threshold=20):
+        while not MindsStormUtil.check_color_euclid(color_sensor=self.color_sensor, color_value=BLUE, threshold=30):
 
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
@@ -108,4 +108,4 @@ class LineFollower:
 
 
 
-
+ 
