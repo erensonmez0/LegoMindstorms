@@ -212,6 +212,7 @@ class ColorField:
                 self.precision_module.turn_gyro(TURN_LEFT)
                 self.precision_module.straight_gyro(offset)
                 self.precision_module.turn_gyro(TURN_LEFT)
+                # TODO Test this
                 self.align_backwards(-(distance_to_wall + 20))
                 self.precision_module.straight_gyro(distance_to_wall)
 
