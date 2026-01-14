@@ -33,7 +33,7 @@ class DebugTest:
         # self.arm_motor.run_target(500, -5)
         # self.arm_motor.stop()
 
-        # ev3.speaker.play_file('/home/robot/LegoMindstorms/goodresult-82807.mp3')
+        ev3.speaker.play_file('/home/robot/LegoMindstorms/goodresult-82807.wav')
 
         # while True:
         #     print(self.color_sensor.rgb())
