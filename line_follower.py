@@ -39,12 +39,13 @@ class LineFollower:
         # Start following the line endlessly.
         while not MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3):
             self.PROPORTIONAL_GAIN = 2
+            self.DRIVE_SPEED += 1
 
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
             
             # ROBOT on line
-            if light > self.PHRESHOLD:               
+            if light >= self.PHRESHOLD:               
 
                 
                 # Calculate the deviation from the threshold.
