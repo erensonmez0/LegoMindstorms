@@ -113,7 +113,7 @@ class PrecisionModule:
 
     def straight_gyro_with_condition(
             self, distance: int, condition_to_check
-    ) -> None:
+    ) -> bool:
         """straight(distance)
 
         Drives straight for a given distance and then stops.
@@ -126,8 +126,10 @@ class PrecisionModule:
         Arguments:
             :param distance: Distance to travel in mm
             :param condition_to_check: Will continuously check this condition (please give as "lambda:") and abort if true
+            :return bool: returns true when the method aborted due to the condition_to_check
         """
         min_speed = 50
+        return_bool = condition_to_check()
 
         self.drive_base.reset()
         self.gyro_sensor.reset_angle(0)
@@ -143,6 +145,7 @@ class PrecisionModule:
                 reverseSpeed = -1 * robotSpeed
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(reverseSpeed, angle_correction)
+                return_bool = condition_to_check()
         elif distance > 0:  # move forwards
             while (self.drive_base.distance() < distance) and not condition_to_check():
                 robotSpeed = min(
@@ -152,7 +155,9 @@ class PrecisionModule:
                     self.straight_speed)
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(robotSpeed, angle_correction)
+                return_bool = condition_to_check()
         self.drive_base.stop()
+        return return_bool
 
 
     def straight_gyro(
@@ -171,7 +176,7 @@ class PrecisionModule:
 
     def turn_gyro_with_condition(
             self, angle: float,  condition_to_check
-    ) -> None:
+    ) -> bool:
         """turn(angle)
 
         Turns in place by a given angle and then stops.
@@ -180,8 +185,10 @@ class PrecisionModule:
         Arguments:
             :param condition_to_check: Will continuously check this condition (please give as "lambda:") and abort if true
             :param angle: Angle of the turn in degree.
+            :return bool: returns true when the method aborted due to the condition_to_check
         """
         min_speed = 50
+        return_bool = condition_to_check()
 
         # angle correction
         angle = angle * 1
@@ -192,14 +199,19 @@ class PrecisionModule:
                 speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
                 self.right_motor.run(speed=(-1 * speed))
                 self.left_motor.run(speed=speed)
+                return_bool = condition_to_check()
+
         elif angle > 0:
             while self.gyro_sensor.angle() < angle and not condition_to_check():
                 speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
                 self.right_motor.run(speed=speed)
                 self.left_motor.run(speed=(-1 * speed))
+                return_bool = condition_to_check()
 
         self.right_motor.brake()
         self.left_motor.brake()
+        return return_bool
+
 
     def turn_gyro(
             self, angle: float
