@@ -24,8 +24,9 @@ class LineFollower:
 
     
 
-    def __init__(self, drive_base:DriveBase, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor):
+    def __init__(self, drive_base:DriveBase, precision_module:PrecisionModule, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor):
         self.drive_base = drive_base
+        self.precision_module = precision_module
         self.drive_base.settings(turn_rate=1000, turn_acceleration=10000)
         self.color_sensor = color_sensor
         self.ultrasonic_sensor = ultrasonic_sensor
@@ -85,14 +86,22 @@ class LineFollower:
         return False
         
     def avoid_obstacle(self):
-        #TODO implement this  :D
-        self.drive_base.turn(80)
-        self.drive_base.straight(150)
-        self.drive_base.turn(-80)
-        self.drive_base.straight(400)
-        self.drive_base.turn(-80)
-        self.drive_base.straight(150)
-        self.drive_base.turn(80)
+        #implement this  :D
+        # self.drive_base.turn(80)
+        # self.drive_base.straight(150)
+        # self.drive_base.turn(-80)
+        # self.drive_base.straight(400)
+        # self.drive_base.turn(-80)
+        # self.drive_base.straight(150)
+        # self.drive_base.turn(80)
+        #TODO change to use precisionmodule
+        self.precision_module.turn_gyro(90)
+        self.precision_module.straight_gyro(150)
+        self.precision_module.turn_gyro(-90)
+        self.precision_module.straight_gyro(400)
+        self.precision_module.turn_gyro(-90)
+        self.precision_module.straight_gyro(150)
+        self.precision_module.turn_gyro(90)
 
 
 
