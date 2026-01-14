@@ -124,7 +124,7 @@ def menu_select(initial=0):
             return None
 
 # ---------------------- Section Runners ----------------------
-def run_line_follow():
+def run_line_follow(wait_for_button=True):
     ev3.screen.clear()
     ev3.screen.print("Linienfolgen")
     ev3.screen.print("Starting...")
@@ -141,19 +141,20 @@ def run_line_follow():
         ev3.screen.print("Error:")
         ev3.screen.print(str(e))
         wait(3000)
-    
-    ev3.screen.clear()
-    ev3.screen.print("Fertig!")
-    ev3.screen.print("Enter: Menu")
 
-    wait_release()
-    while True:
-        wait(80)
-        if Button.CENTER in ev3.buttons.pressed():
-            wait_release()
-            return
+    if wait_for_button:
+        ev3.screen.clear()
+        ev3.screen.print("Fertig!")
+        ev3.screen.print("Enter: Menu")
 
-def run_pringler():
+        wait_release()
+        while True:
+            wait(80)
+            if Button.CENTER in ev3.buttons.pressed():
+                wait_release()
+                return
+
+def run_pringler(wait_for_button=True):
     ev3.screen.clear()
     ev3.screen.print("Pringler")
     ev3.screen.print("Starting...")
@@ -174,18 +175,19 @@ def run_pringler():
         ev3.screen.print(str(e))
         wait(3000)
     
-    ev3.screen.clear()
-    ev3.screen.print("Fertig!")
-    ev3.screen.print("Enter: Menu")
-    wait_release()
+    if wait_for_button:
+        ev3.screen.clear()
+        ev3.screen.print("Fertig!")
+        ev3.screen.print("Enter: Menu")
+        wait_release()
 
-    while True:
-        wait(80)
-        if Button.CENTER in ev3.buttons.pressed():
-            wait_release()
-            return
+        while True:
+            wait(80)
+            if Button.CENTER in ev3.buttons.pressed():
+                wait_release()
+                return
         
-def run_bridge():
+def run_bridge(wait_for_button=True):
     ev3.screen.clear()
     ev3.screen.print("Brücke")
     ev3.screen.print("Starting...")
@@ -203,18 +205,19 @@ def run_bridge():
         ev3.screen.print(str(e))
         wait(3000)
     
-    ev3.screen.clear()
-    ev3.screen.print("Fertig!")
-    ev3.screen.print("Enter: Menu")
-    wait_release()
+    if wait_for_button:
+        ev3.screen.clear()
+        ev3.screen.print("Fertig!")
+        ev3.screen.print("Enter: Menu")
+        wait_release()
 
-    while True:
-        wait(80)
-        if Button.CENTER in ev3.buttons.pressed():
-            wait_release()
-            return
+        while True:
+            wait(80)
+            if Button.CENTER in ev3.buttons.pressed():
+                wait_release()
+                return
         
-def run_color_field():
+def run_color_field(wait_for_button=True):
     ev3.screen.clear()
     ev3.screen.print("Farbfeldsuche")
     ev3.screen.print("Starting...")
@@ -234,17 +237,18 @@ def run_color_field():
         ev3.screen.print(str(e))
         wait(3000)
     
-    ev3.screen.clear()
-    ev3.screen.print("Fertig!")
-    ev3.screen.print("Enter: Menu")
+    if wait_for_button:
+        ev3.screen.clear()
+        ev3.screen.print("Fertig!")
+        ev3.screen.print("Enter: Menu")
 
-    wait_release()
+        wait_release()
 
-    while True:
-        wait(80)
-        if Button.CENTER in ev3.buttons.pressed():
-            wait_release()
-            return
+        while True:
+            wait(80)
+            if Button.CENTER in ev3.buttons.pressed():
+                wait_release()
+                return
         
 def run_debug_callibration():
     ev3.screen.clear()
@@ -303,10 +307,10 @@ def main():
         elif current == Section.COLOR_FIELD:
             run_color_field()
         elif current == Section.RUN_COURSE:
-            run_line_follow()
-            run_pringler()
-            run_bridge()
-            run_color_field()
+            # run_line_follow()
+            run_pringler(wait_for_button=False)
+            run_bridge(wait_for_button=False)
+            run_color_field(wait_for_button=False)
 
 
 
