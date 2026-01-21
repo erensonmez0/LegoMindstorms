@@ -70,7 +70,7 @@ class LineFollower:
                 self.search_line()
 
     def scan_turn_until_line(self, angle = 90) -> bool:
-        print(1)
+            (1)
         """Rotate in place and poll the color sensor until the line is found.
 
         Returns True if the line was found, False on timeout.
