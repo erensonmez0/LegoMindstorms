@@ -129,14 +129,14 @@ class PrecisionModule:
             :return bool: returns true when the method aborted due to the condition_to_check
         """
         min_speed = 50
-        return_bool = condition_to_check()
+        return_bool = condition_to_check
 
         self.drive_base.reset()
         self.gyro_sensor.reset_angle(0)
 
         PROPORTIONAL_GAIN = 1.1
         if distance < 0:  # move backwards
-            while (self.drive_base.distance() > distance) and not return_bool():
+            while (self.drive_base.distance() > distance) and not return_bool():    #die klammern hinter return_bool sind essenziell!
                 robotSpeed = min(
                     max(
                         (0.005 * self.straight_speed * abs(distance - self.drive_base.distance())),
@@ -145,9 +145,9 @@ class PrecisionModule:
                 reverseSpeed = -1 * robotSpeed
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(reverseSpeed, angle_correction)
-                return_bool = condition_to_check()
+                return_bool = condition_to_check
         elif distance > 0:  # move forwards
-            while (self.drive_base.distance() < distance) and not return_bool():
+            while (self.drive_base.distance() < distance) and not return_bool():    #die klammern hinter return_bool sind essenziell!
                 robotSpeed = min(
                     max(
                         (0.005 * self.straight_speed * abs(distance - self.drive_base.distance())),
@@ -155,9 +155,9 @@ class PrecisionModule:
                     self.straight_speed)
                 angle_correction = 1 * PROPORTIONAL_GAIN * self.gyro_sensor.angle()
                 self.drive_base.drive(robotSpeed, angle_correction)
-                return_bool = condition_to_check()
+                return_bool = condition_to_check
         self.drive_base.stop()
-        if return_bool:
+        if return_bool():   #die klammern hinter return_bool sind essenziell!
             return True
         else:
             return False
@@ -191,29 +191,31 @@ class PrecisionModule:
             :return bool: returns true when the method aborted due to the condition_to_check
         """
         min_speed = 50
-        return_bool = condition_to_check()
+        # TODO warum hier Klammern? (fragt matti)
+        # TODO bool typ forcen???
+        return_bool = condition_to_check
 
         # angle correction
         angle = angle * 1
 
         self.gyro_sensor.reset_angle(0)
         if angle < 0:
-            while self.gyro_sensor.angle() > angle and not return_bool():
+            while self.gyro_sensor.angle() > angle and not return_bool():   #die klammern hinter return_bool sind essenziell!
                 speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
                 self.right_motor.run(speed=(-1 * speed))
                 self.left_motor.run(speed=speed)
-                return_bool = condition_to_check()
+                return_bool = condition_to_check
 
         elif angle > 0:
-            while self.gyro_sensor.angle() < angle and not return_bool():
+            while self.gyro_sensor.angle() < angle and not return_bool():   #die klammern hinter return_bool sind essenziell!
                 speed = max((0.05 * self.turn_rate * abs(angle - self.gyro_sensor.angle())), min_speed)
                 self.right_motor.run(speed=speed)
                 self.left_motor.run(speed=(-1 * speed))
-                return_bool = condition_to_check()
+                return_bool = condition_to_check
 
         self.right_motor.brake()
         self.left_motor.brake()
-        if return_bool:
+        if return_bool():   #die klammern hinter return_bool sind essenziell!
             return True
         else:
             return False

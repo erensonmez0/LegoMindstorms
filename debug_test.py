@@ -19,7 +19,7 @@ class DebugTest:
         self.touch_sensor = touch_sensor
 
     def run(self):
-        ev3 = EV3Brick()
+        # ev3 = EV3Brick()
 
         # self.precision_module.straight_gyro(500)
 
@@ -33,8 +33,11 @@ class DebugTest:
         # self.arm_motor.run_target(500, -5)
         # self.arm_motor.stop()
 
-        ev3.speaker.set_volume(100, '_all_')
-        ev3.speaker.play_file('/home/robot/LegoMindstorms/goodresult82807.wav')
-        ev3.speaker.play_file('/home/robot/LegoMindstorms/boing.wav')
+        # ev3.speaker.set_volume(100, '_all_')
+        # ev3.speaker.play_file('/home/robot/LegoMindstorms/goodresult82807.wav')
+        # ev3.speaker.play_file('/home/robot/LegoMindstorms/boing.wav')
 
+        # self.drive_base.straight(100)
+        # self.precision_module.turn_gyro_with_condition(360, lambda: (self.touch_sensor.pressed()))
+        self.precision_module.straight_gyro_with_condition(360, lambda: (self.touch_sensor.pressed()))
         #     time.sleep(1)
