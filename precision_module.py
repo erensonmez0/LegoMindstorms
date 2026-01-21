@@ -233,3 +233,13 @@ class PrecisionModule:
             :param angle: Angle of the turn in degree.
         """
         self.turn_gyro_with_condition(angle, lambda: False)
+
+
+    def brake(self):
+        """brake()
+
+        Brake everything.
+        """
+        self.drive_base.stop()
+        self.right_motor.brake()
+        self.left_motor.brake()
