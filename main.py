@@ -329,8 +329,13 @@ main()
 
 
 # TODO
-#   - farbfinden -> testen
-#   - linefollower -> find good value for pgain
+#   - farbfinden -> testen. Distance to wall ist buggy.... weglassen oder fixen
+#   - linefollower -> find good value for Pgain
+#   - Line follower fixen
+#   - Farben kalibrieren
+#   - Gesammttest
 #   -
 #   -
 #
+#
+# Note to self: Batterie "12/19 Nr5" ist schlecht
