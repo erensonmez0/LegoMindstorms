@@ -131,6 +131,7 @@ class PrecisionModule:
         min_speed = 50
         return_bool = condition_to_check
 
+        self.drive_base.stop()
         self.drive_base.reset()
         self.gyro_sensor.reset_angle(0)
 
@@ -196,6 +197,7 @@ class PrecisionModule:
         # angle correction
         angle = angle * 1
 
+        self.drive_base.stop()
         self.gyro_sensor.reset_angle(0)
         if angle < 0:
             while self.gyro_sensor.angle() > angle and not return_bool():   #die klammern hinter return_bool sind essenziell!
@@ -231,3 +233,13 @@ class PrecisionModule:
             :param angle: Angle of the turn in degree.
         """
         self.turn_gyro_with_condition(angle, lambda: False)
+
+
+    def brake(self):
+        """brake()
+
+        Brake everything.
+        """
+        self.drive_base.stop()
+        self.right_motor.brake()
+        self.left_motor.brake()
