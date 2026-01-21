@@ -191,8 +191,6 @@ class PrecisionModule:
             :return bool: returns true when the method aborted due to the condition_to_check
         """
         min_speed = 50
-        # TODO warum hier Klammern? (fragt matti)
-        # TODO bool typ forcen???
         return_bool = condition_to_check
 
         # angle correction
