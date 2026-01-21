@@ -38,6 +38,11 @@ class DebugTest:
         # ev3.speaker.play_file('/home/robot/LegoMindstorms/boing.wav')
 
         # self.drive_base.straight(100)
-        # self.precision_module.turn_gyro_with_condition(360, lambda: (self.touch_sensor.pressed()))
+        self.precision_module.turn_gyro(180)
+        time.sleep(3)
+        self.precision_module.straight_gyro(360)
+        time.sleep(3)
+        self.precision_module.turn_gyro_with_condition(-180, lambda: (self.touch_sensor.pressed()))
+        time.sleep(3)
         self.precision_module.straight_gyro_with_condition(360, lambda: (self.touch_sensor.pressed()))
         #     time.sleep(1)

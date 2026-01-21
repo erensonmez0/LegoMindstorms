@@ -42,5 +42,4 @@ class Bridge:
 
     def run(self):
         #self.align_start()
-        #sleep(1)
         self.drive_bridge()

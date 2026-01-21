@@ -329,7 +329,7 @@ main()
 
 
 # TODO
-#   - farbfinden -> testen, change to use new precisionmodule feature
+#   - farbfinden -> testen
 #   -
 #   -
 #   -
