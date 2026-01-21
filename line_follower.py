@@ -16,9 +16,9 @@ class LineFollower:
     WHITE = 42
     THRESHOLD = (BLACK+WHITE)/2
     PHRESHOLD = (BLACK+WHITE)/3
-    PROPORTIONAL_GAIN = 2.2
-    DRIVE_SPEED = 90
-    TURN_SPEED = 10000
+    PROPORTIONAL_GAIN = 1.6
+    DRIVE_SPEED = 110
+    TURN_SPEED = 200
     INDEX = 0
     
 
@@ -27,7 +27,7 @@ class LineFollower:
     def __init__(self, drive_base:DriveBase, precision_module:PrecisionModule, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor):
         self.drive_base = drive_base
         self.precision_module = precision_module
-        self.drive_base.settings(turn_rate=1000, turn_acceleration=10000)
+        self.drive_base.settings(turn_rate=200, turn_acceleration=100)
         self.color_sensor = color_sensor
         self.ultrasonic_sensor = ultrasonic_sensor
         self.watch = StopWatch()
@@ -39,8 +39,6 @@ class LineFollower:
         
         # Start following the line endlessly.
         while not MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3):
-            self.PROPORTIONAL_GAIN = 2
-            self.DRIVE_SPEED += 3
 
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
@@ -57,7 +55,6 @@ class LineFollower:
 
                 # Set the drive base speed and turn rate.
                 self.drive_base.drive(self.DRIVE_SPEED, turn_rate)
-                self.DRIVE_SPEED += 1
                                       
 
                 # You can wait for a short time or do other things in this loop.
@@ -80,9 +77,8 @@ class LineFollower:
         print(2)
         found = self.precision_module.turn_gyro_with_condition(angle, lambda: ((self.color_sensor.reflection() >= self.PHRESHOLD or
                                                                MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3))))
-        print(3)
-        if not found:
-            self.precision_module.turn_gyro(-angle)
+        
+        
                  
         return found
     
@@ -109,16 +105,22 @@ class LineFollower:
 
 
     def search_line(self):
-        self.DRIVE_SPEED=40
         for i in range(3):
             if self.scan_turn_until_line(-90):
                 self.drive_base.drive(self.DRIVE_SPEED, -90)
-                wait(100)
+                wait(300)
+                self.precision_module.brake()
                 return
-            elif self.scan_turn_until_line(90):
+            elif self.scan_turn_until_line(180):
                 self.drive_base.drive(self.DRIVE_SPEED, 90)
-                wait(100)
+                wait(300)
+                self.precision_module.brake()
+
                 return
+            else:
+                self.precision_module.turn_gyro(-90)
+                self.precision_module.brake()
+
                         
             self.drive_base.straight(100)
             if self.color_sensor.reflection()>=self.THRESHOLD:
