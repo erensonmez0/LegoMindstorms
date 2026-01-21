@@ -15,9 +15,11 @@ class LineFollower:
     BLACK = 8
     WHITE = 42
     THRESHOLD = (BLACK+WHITE)/2
-    PHRESHOLD = (BLACK+WHITE)/3
+    PHRESHOLD = (BLACK+WHITE)/2.5
     PROPORTIONAL_GAIN = 1.6
-    DRIVE_SPEED = 110
+    MAX_DRIVE_SPEED = 70
+    DRIVE_SPEED=70
+    MIN_DRIVE_SPEED = 40
     TURN_SPEED = 200
     INDEX = 0
     
@@ -27,7 +29,7 @@ class LineFollower:
     def __init__(self, drive_base:DriveBase, precision_module:PrecisionModule, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor):
         self.drive_base = drive_base
         self.precision_module = precision_module
-        self.drive_base.settings(turn_rate=200, turn_acceleration=100)
+        self.drive_base.settings(turn_rate=200, turn_acceleration=80)
         self.color_sensor = color_sensor
         self.ultrasonic_sensor = ultrasonic_sensor
         self.watch = StopWatch()
@@ -39,7 +41,8 @@ class LineFollower:
         
         # Start following the line endlessly.
         while not MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3):
-
+            if self.DRIVE_SPEED < self.MAX_DRIVE_SPEED:
+                self.DRIVE_SPEED+=1
             light = self.color_sensor.reflection()
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
             print("11")
@@ -105,21 +108,19 @@ class LineFollower:
 
 
     def search_line(self):
+        self.DRIVE_SPEED=self.MIN_DRIVE_SPEED
         for i in range(3):
             if self.scan_turn_until_line(-90):
-                self.drive_base.drive(self.DRIVE_SPEED, -90)
-                wait(300)
-                self.precision_module.brake()
+
+                
                 return
             elif self.scan_turn_until_line(180):
-                self.drive_base.drive(self.DRIVE_SPEED, 90)
-                wait(300)
-                self.precision_module.brake()
-
+               
                 return
+            
             else:
                 self.precision_module.turn_gyro(-90)
-                self.precision_module.brake()
+
 
                         
             self.drive_base.straight(100)
