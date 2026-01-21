@@ -81,7 +81,7 @@ class LineFollower:
         
                  
         return found
-    
+
         
     def avoid_obstacle(self):
         self.precision_module.turn_gyro(90)
