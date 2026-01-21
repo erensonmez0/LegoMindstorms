@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
+import time
 from time import sleep
 
+from pybricks.ev3devices import ColorSensor, UltrasonicSensor, TouchSensor
 from pybricks.hubs import EV3Brick
 from pybricks.robotics import DriveBase
 
 from config import *
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
+
 
 class ColorField:
     BLACK = 8
@@ -94,18 +97,31 @@ class ColorField:
             if MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and not found_red:
                 found_red = True
                 ev3.speaker.beep(1000, 200)
-                self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                # self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                # TODO test this!!!
+                self.precision_module.straight_gyro_with_condition(
+                    distance_after_sucessfull_find,
+                    lambda: not MindsStormUtil.check_color(self.color_sensor, RED, color_threshold))
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red  and not found_white:
                 found_white = True
                 ev3.speaker.beep(1500, 200)
-                self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                # self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                self.precision_module.straight_gyro_with_condition(
+                    distance_after_sucessfull_find,
+                    lambda: not MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold))
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and found_red:
-                self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                # self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                self.precision_module.straight_gyro_with_condition(
+                    distance_after_sucessfull_find,
+                    lambda: not MindsStormUtil.check_color(self.color_sensor, RED, color_threshold))
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red and found_white:
-                self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                # self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                self.precision_module.straight_gyro_with_condition(
+                    distance_after_sucessfull_find,
+                    lambda: not MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold))
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and found_white:
                 break
