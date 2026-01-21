@@ -66,10 +66,10 @@ class PrecisionModule:
             :param new_turn_acceleration: Optional value for turn acceleration
             """
         if new_turn_acceleration:
-            self.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
+            self.drive_base.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
             self.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, new_turn_acceleration)
         else:
-            self.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
+            self.drive_base.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
             self.settings(STRAIGHT_SPEED_FAST, STRAIGHT_ACCELERATION, new_turn_rate, TURN_ACCELERATION)
 
 
