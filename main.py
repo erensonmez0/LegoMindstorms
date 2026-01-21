@@ -174,6 +174,7 @@ def run_pringler(wait_for_button=True):
         ev3.screen.clear()
         ev3.screen.print("Error:")
         ev3.screen.print(str(e))
+        print(str(e))
         wait(3000)
     
     if wait_for_button:

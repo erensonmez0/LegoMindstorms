@@ -62,28 +62,31 @@ class LineFollower:
 
                 # You can wait for a short time or do other things in this loop.
                 if self.ultrasonic_sensor.distance() <= 90:
+                    print("apples")
                     self.avoid_obstacle()
 
             # ROBOT not on line -> search until we find it again (poll sensor each loop)
             else:
                 EV3Brick().speaker.beep(800,6)
+                print(12)
                 self.search_line()
 
     def scan_turn_until_line(self, angle = 90) -> bool:
         """Rotate in place and poll the color sensor until the line is found.
 
         Returns True if the line was found, False on timeout.
-        debounce: number of consecutive positive reads required to accept the line (helps filter noise)
         """
         
         print(2)
-        found = self.precision_module.turn_gyro_with_condition(angle,
-                                                                lambda: self.color_sensor.reflection() >= self.THRESHOLD or MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3))
+        found = self.precision_module.turn_gyro_with_condition(angle, lambda: ((self.color_sensor.reflection() >= self.PHRESHOLD or
+                                                               MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3))))
         print(3)
         if not found:
             self.precision_module.turn_gyro(-angle)
                  
         return found
+    
+    """"""
         
     def avoid_obstacle(self):
         #implement this  :D
@@ -109,10 +112,12 @@ class LineFollower:
         self.DRIVE_SPEED=40
         for i in range(3):
             if self.scan_turn_until_line(-90):
-                self.drive_base.drive(self.DRIVE_SPEED, -70)
+                self.drive_base.drive(self.DRIVE_SPEED, -90)
+                wait(100)
                 return
             elif self.scan_turn_until_line(90):
-                self.drive_base.drive(self.DRIVE_SPEED, 70)
+                self.drive_base.drive(self.DRIVE_SPEED, 90)
+                wait(100)
                 return
                         
             self.drive_base.straight(100)
