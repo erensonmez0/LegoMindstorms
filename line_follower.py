@@ -78,15 +78,15 @@ class LineFollower:
         """
         
         print(2)
-        found = self.precision_module.turn_gyro_with_condition(angle, lambda: False)
+        found = self.precision_module.turn_gyro_with_condition(angle, lambda: ((self.color_sensor.reflection() >= self.PHRESHOLD or
+                                                               MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3))))
         print(3)
         if not found:
             self.precision_module.turn_gyro(-angle)
                  
         return found
     
-    """(self.color_sensor.reflection() >= self.THRESHOLD or
-                                                               MindsStormUtil.check_color(color_sensor=self.color_sensor, color_value=BLUE_LINE_FOLLOW, threshold=3))"""
+    """"""
         
     def avoid_obstacle(self):
         #implement this  :D
@@ -112,10 +112,12 @@ class LineFollower:
         self.DRIVE_SPEED=40
         for i in range(3):
             if self.scan_turn_until_line(-90):
-                self.drive_base.drive(self.DRIVE_SPEED, -70)
+                self.drive_base.drive(self.DRIVE_SPEED, -90)
+                wait(100)
                 return
             elif self.scan_turn_until_line(90):
-                self.drive_base.drive(self.DRIVE_SPEED, 70)
+                self.drive_base.drive(self.DRIVE_SPEED, 90)
+                wait(100)
                 return
                         
             self.drive_base.straight(100)
