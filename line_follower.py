@@ -6,7 +6,7 @@ from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
 from pybricks.tools import DataLog, StopWatch, wait
 from precision_module import PrecisionModule
-from config import BLUE_LINE_FOLLOW
+from config import BLUE_LINE_FOLLOW, WHITE
 from mindstorm_util import MindsStormUtil
 
 import time
@@ -82,24 +82,16 @@ class LineFollower:
                  
         return found
     
-    """"""
         
     def avoid_obstacle(self):
-        #implement this  :D
-        # self.drive_base.turn(80)
-        # self.drive_base.straight(150)
-        # self.drive_base.turn(-80)
-        # self.drive_base.straight(400)
-        # self.drive_base.turn(-80)
-        # self.drive_base.straight(150)
-        # self.drive_base.turn(80)
-        #TODO change to use precisionmodule
         self.precision_module.turn_gyro(90)
         self.precision_module.straight_gyro(150)
         self.precision_module.turn_gyro(-90)
         self.precision_module.straight_gyro(400)
         self.precision_module.turn_gyro(-90)
-        self.precision_module.straight_gyro(150)
+        self.precision_module.straight_gyro_with_condition(150,
+                                                           lambda: (MindsStormUtil.check_color(self.color_sensor, WHITE)))
+        self.precision_module.straight_gyro(30)
         self.precision_module.turn_gyro(90)
 
 
