@@ -4,7 +4,7 @@
 WHITE = (23, 53, 39)
 BROWN = (2, 7, 1)
 BLUE = (2, 17, 17)
-BLUE_LINE_FOLLOW = (0,14,14)
+BLUE_LINE_FOLLOW = (2, 17, 17) #(0,14,14)
 RED = (6, 3, 0)
 
 # Bridge values
