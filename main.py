@@ -60,8 +60,8 @@ BAR_W = 6
 
 
 class Section:
-    LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, RUN_COURSE, EXIT = range(7)
-    ORDER = [ RUN_COURSE, DEBUG,LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, EXIT]
+    LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD, DEBUG, RUN_COURSE = range(6)
+    ORDER = [ RUN_COURSE, DEBUG,LINE_FOLLOW, PRINGLER, BRIDGE, COLOR_FIELD]
     NAMES = {
         RUN_COURSE: "Run Course",
         DEBUG: "Debug",
@@ -69,7 +69,6 @@ class Section:
         PRINGLER: "Pringler",
         BRIDGE: "Brücke",
         COLOR_FIELD: "Farbfeldsuche",
-        EXIT: "Beenden"
     }
 
 def wait_release():
@@ -294,20 +293,22 @@ def main():
         return
     
     while True:
-        if current == Section.EXIT:
-            ev3.screen.clear()
-            ev3.screen.print("Programm beendet.")
-            break
-        elif current == Section.DEBUG:
+        if current == Section.DEBUG:
             run_debug_callibration()
         elif current == Section.LINE_FOLLOW:
-            run_line_follow()
+            run_line_follow(wait_for_button=False)
+            run_pringler(wait_for_button=False)
+            run_bridge(wait_for_button=False)
+            run_color_field(wait_for_button=False)
         elif current == Section.PRINGLER:
-            run_pringler()
+            run_pringler(wait_for_button=False)
+            run_bridge(wait_for_button=False)
+            run_color_field(wait_for_button=False)
         elif current == Section.BRIDGE:
-            run_bridge()
+            run_bridge(wait_for_button=False)
+            run_color_field(wait_for_button=False)
         elif current == Section.COLOR_FIELD:
-            run_color_field()
+            run_color_field(wait_for_button=False)
         elif current == Section.RUN_COURSE:
             run_line_follow(wait_for_button=False)
             run_pringler(wait_for_button=False)
@@ -334,7 +335,7 @@ main()
 #   - Line follower fixen
 #   - Farben kalibrieren
 #   - Gesammttest
-#   -
+#   - for hot fix change the menu so that when a parcour is chosen it starts from that point on
 #   -
 #
 #
