@@ -334,7 +334,7 @@ main()
 #   - Line follower fixen
 #   - Farben kalibrieren
 #   - Gesammttest
-#   -
+#   - for hot fix change the menu so that when a parcour is chosen it starts from that point on
 #   -
 #
 #
