@@ -337,5 +337,4 @@ main()
 #   -
 #   -
 #
-#
 # Note to self: Batterie "12/19 Nr5" ist schlecht
