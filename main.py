@@ -332,10 +332,7 @@ main()
 # TODO
 #   - farbfinden -> testen. Distance to wall ist buggy.... weglassen oder fixen
 #   - linefollower -> find good value for Pgain
-#   - Line follower fixen
-#   - Farben kalibrieren
 #   - Gesammttest
-#   - for hot fix change the menu so that when a parcour is chosen it starts from that point on
 #   -
 #
 #
