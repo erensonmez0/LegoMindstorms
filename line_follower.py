@@ -16,10 +16,10 @@ class LineFollower:
     WHITE = 42
     THRESHOLD = (BLACK+WHITE)/2
     PHRESHOLD = (BLACK+WHITE)/2.5
-    PROPORTIONAL_GAIN = 1.6
+    PROPORTIONAL_GAIN = 1.7
     MAX_DRIVE_SPEED = 70
     DRIVE_SPEED=70
-    MIN_DRIVE_SPEED = 40
+    MIN_DRIVE_SPEED = 45
     TURN_SPEED = 200
     INDEX = 0
     
@@ -47,7 +47,7 @@ class LineFollower:
             EV3Brick().screen.print(self.color_sensor.reflection()-self.THRESHOLD)
             print("11")
             # ROBOT on line
-            if light >= self.PHRESHOLD:               
+            if light > self.BLACK:               
 
                 
                 # Calculate the deviation from the threshold.
