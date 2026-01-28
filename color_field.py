@@ -80,8 +80,8 @@ class ColorField:
         found_red = False
         found_white = False
         turn_counter = 0
-        distance_to_wall = 50  #TODO find correct value
-        distance = 850          #TODO find correct value
+        distance_to_wall = 100  #TODO find correct value
+        distance = 750
         color_threshold = 4
         distance_after_sucessfull_find = 70
 
@@ -97,31 +97,31 @@ class ColorField:
             if MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and not found_red:
                 found_red = True
                 ev3.speaker.beep(1000, 200)
-                self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                # self.precision_module.straight_gyro(distance_after_sucessfull_find)
                 # TODO test this!!!
-                # self.precision_module.straight_gyro_with_condition(
-                #     distance_after_sucessfull_find,
-                #     lambda: not MindsStormUtil.check_color(self.color_sensor, RED, color_threshold))
+                self.precision_module.straight_gyro_with_condition(
+                    distance_after_sucessfull_find,
+                    lambda: not MindsStormUtil.check_color(self.color_sensor, RED, color_threshold))
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red  and not found_white:
                 found_white = True
                 ev3.speaker.beep(1500, 200)
-                self.precision_module.straight_gyro(distance_after_sucessfull_find)
-                # self.precision_module.straight_gyro_with_condition(
-                #     distance_after_sucessfull_find,
-                #     lambda: not MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold))
+                # self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                self.precision_module.straight_gyro_with_condition(
+                    distance_after_sucessfull_find,
+                    lambda: not MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold))
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and not found_white and found_red:
-                self.precision_module.straight_gyro(distance_after_sucessfull_find)
-                # self.precision_module.straight_gyro_with_condition(
-                #     distance_after_sucessfull_find,
-                #     lambda: not MindsStormUtil.check_color(self.color_sensor, RED, color_threshold))
+                # self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                self.precision_module.straight_gyro_with_condition(
+                    distance_after_sucessfull_find,
+                    lambda: not MindsStormUtil.check_color(self.color_sensor, RED, color_threshold))
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold) and not found_red and found_white:
-                self.precision_module.straight_gyro(distance_after_sucessfull_find)
-                # self.precision_module.straight_gyro_with_condition(
-                #     distance_after_sucessfull_find,
-                #     lambda: not MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold))
+                # self.precision_module.straight_gyro(distance_after_sucessfull_find)
+                self.precision_module.straight_gyro_with_condition(
+                    distance_after_sucessfull_find,
+                    lambda: not MindsStormUtil.check_color(self.color_sensor, WHITE, color_threshold))
                 continue
             elif MindsStormUtil.check_color(self.color_sensor, RED, color_threshold) and found_white:
                 break
@@ -133,7 +133,7 @@ class ColorField:
                 self.precision_module.straight_gyro(offset)
                 self.precision_module.turn_gyro(TURN_LEFT)
                 # TODO Test this
-                self.align_backwards(-(distance_to_wall + 20))
+                self.align_backwards(-(distance_to_wall + 15))
                 self.precision_module.straight_gyro(distance_to_wall)
 
             elif turn_counter % 2 == 1:
