@@ -16,7 +16,7 @@ class LineFollower:
     WHITE = 42
     THRESHOLD = (BLACK+WHITE)/2
     PHRESHOLD = (BLACK+WHITE)/2.5
-    PROPORTIONAL_GAIN = 1.6 # 2 #1.6
+    PROPORTIONAL_GAIN = 2 #1.6   # TODO find good Value
     MAX_DRIVE_SPEED = 70
     DRIVE_SPEED=70
     MIN_DRIVE_SPEED = 40
