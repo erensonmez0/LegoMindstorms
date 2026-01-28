@@ -80,7 +80,7 @@ class ColorField:
         found_red = False
         found_white = False
         turn_counter = 0
-        distance_to_wall = 120  #TODO find correct value
+        distance_to_wall = 120
         distance = 750
         color_threshold = 4
         distance_after_sucessfull_find = 70

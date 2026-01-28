@@ -1,5 +1,4 @@
 #!/usr/bin/env pybricks-micropython
-from time import sleep
 
 from pybricks.ev3devices import Motor, GyroSensor
 from pybricks.robotics import DriveBase

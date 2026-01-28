@@ -8,7 +8,7 @@ BLUE_LINE_FOLLOW = (2, 17, 17) #(0,14,14)
 RED = (6, 3, 0)
 
 # Bridge values
-RAMP_UP = 990           #todo find good value
+RAMP_UP = 990
 TURN_LEFT = -90
 TURN_RIGHT = 90
 BRIDGE_LENGTH = 1220

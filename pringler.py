@@ -1,13 +1,11 @@
+import time
+
 from pybricks.ev3devices import Motor, ColorSensor, UltrasonicSensor, TouchSensor
-from pybricks.hubs import EV3Brick
 from pybricks.robotics import DriveBase
 
 from config import *
 from mindstorm_util import MindsStormUtil
 from precision_module import PrecisionModule
-from bridge import Bridge
-
-import time
 
 
 class Pringler:

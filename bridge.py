@@ -1,5 +1,3 @@
-from time import sleep
-
 from pybricks.ev3devices import TouchSensor, ColorSensor
 
 from config import *
@@ -41,5 +39,4 @@ class Bridge:
         self.precision_module.straight_gyro(-RAMP_DOWN)
 
     def run(self):
-        #self.align_start()
         self.drive_bridge()

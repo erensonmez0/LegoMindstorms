@@ -1,30 +1,25 @@
 #!/usr/bin/env python3
+from pybricks.ev3devices import ColorSensor, UltrasonicSensor
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import Motor, GyroSensor, ColorSensor, UltrasonicSensor
-from pybricks.parameters import Port
-from pybricks.iodevices import Ev3devSensor
 from pybricks.robotics import DriveBase
-from pybricks.tools import DataLog, StopWatch, wait
-from precision_module import PrecisionModule
+from pybricks.tools import StopWatch
+
 from config import BLUE_LINE_FOLLOW, WHITE
 from mindstorm_util import MindsStormUtil
+from precision_module import PrecisionModule
 
-import time
 
 class LineFollower:
     BLACK = 8
     WHITE = 42
     THRESHOLD = (BLACK+WHITE)/2
     PHRESHOLD = (BLACK+WHITE)/2.5
-    PROPORTIONAL_GAIN = 2 #1.6   # TODO find good Value
+    PROPORTIONAL_GAIN = 2
     MAX_DRIVE_SPEED = 70
     DRIVE_SPEED=70
     MIN_DRIVE_SPEED = 45
     TURN_SPEED = 200
     INDEX = 0
-    ##afdsafa
-    
-
     
 
     def __init__(self, drive_base:DriveBase, precision_module:PrecisionModule, color_sensor:ColorSensor, ultrasonic_sensor: UltrasonicSensor):

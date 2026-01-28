@@ -330,7 +330,6 @@ main()
 
 
 # TODO
-#   - Farbfeld timen
 #   - Gesammttest mit neuem Parkour
 #   -
 #
