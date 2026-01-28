@@ -19,6 +19,22 @@ class DebugTest:
         self.touch_sensor = touch_sensor
 
     def run(self):
+        ev3 = EV3Brick()
+        
+        while True:
+            rgb = self.color_sensor.rgb()
+            
+            ev3.screen.clear()
+            ev3.screen.print("RGB: {}".format(rgb))
+            ev3.screen.print("")
+            ev3.screen.print("CENTER = exit")
+            
+            print(rgb)  # Also prints to console
+            
+            if ev3.buttons.pressed():
+                break
+            
+            time.sleep(0.2)
         # ev3 = EV3Brick()
 
         # self.precision_module.straight_gyro(500)
@@ -38,11 +54,14 @@ class DebugTest:
         # ev3.speaker.play_file('/home/robot/LegoMindstorms/boing.wav')
 
         # self.drive_base.straight(100)
-        self.precision_module.turn_gyro(180)
-        time.sleep(3)
-        self.precision_module.straight_gyro(360)
-        time.sleep(3)
-        self.precision_module.turn_gyro_with_condition(-180, lambda: (self.touch_sensor.pressed()))
-        time.sleep(3)
-        self.precision_module.straight_gyro_with_condition(360, lambda: (self.touch_sensor.pressed()))
+        # self.precision_module.turn_gyro(180)
+        # time.sleep(3)
+        # self.precision_module.turn_gyro(-180)
+        # time.sleep(3)
+        # self.precision_module.straight_gyro(360)
+        # time.sleep(3)
+        # self.precision_module.turn_gyro_with_condition(-180, lambda: (self.touch_sensor.pressed()))
+        # time.sleep(3)
+        # self.precision_module.straight_gyro_with_condition(360, lambda: (self.touch_sensor.pressed()))
         #     time.sleep(1)
+        # self.precision_module.straight_gyro(500)

@@ -16,7 +16,7 @@ class LineFollower:
     WHITE = 42
     THRESHOLD = (BLACK+WHITE)/2
     PHRESHOLD = (BLACK+WHITE)/2.5
-    PROPORTIONAL_GAIN = 1.7
+    PROPORTIONAL_GAIN = 2 #1.6   # TODO find good Value
     MAX_DRIVE_SPEED = 70
     DRIVE_SPEED=70
     MIN_DRIVE_SPEED = 45
@@ -84,7 +84,7 @@ class LineFollower:
         
                  
         return found
-    
+
         
     def avoid_obstacle(self):
         self.precision_module.turn_gyro(90)

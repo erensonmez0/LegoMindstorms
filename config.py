@@ -4,14 +4,14 @@
 WHITE = (23, 53, 39)
 BROWN = (2, 7, 1)
 BLUE = (2, 17, 17)
-BLUE_LINE_FOLLOW = (0,14,14)
+BLUE_LINE_FOLLOW = (2, 17, 17) #(0,14,14)
 RED = (6, 3, 0)
 
 # Bridge values
 RAMP_UP = 990           #todo find good value
 TURN_LEFT = -90
 TURN_RIGHT = 90
-BRIDGE_LENGTH = 1240
+BRIDGE_LENGTH = 1220
 RAMP_DOWN = 950
 
 DISTANCE_TO_BRIDGE_START = 240
