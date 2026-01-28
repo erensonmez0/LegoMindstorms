@@ -330,10 +330,16 @@ main()
 
 
 # TODO
-#   - farbfinden -> testen. Distance to wall ist buggy.... weglassen oder fixen
-#   - linefollower -> find good value for Pgain
-#   - Gesammttest
+#   - Farbfeld timen
+#   - Gesammttest mit neuem Parkour
 #   -
+#
+#
+# Aktuelle werte:
+# - Line Folowing: 3min
+# - Pringler: 50s
+# - Brücke: 23s
+# - Farbfeld: -
 #
 #
 # Note to self: Batterie "12/19 Nr5" ist schlecht
