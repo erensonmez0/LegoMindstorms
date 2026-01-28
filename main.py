@@ -336,10 +336,11 @@ main()
 #
 #
 # Aktuelle werte:
-# - Line Folowing: 3min
+# - Line Folowing: 3m
 # - Pringler: 50s
 # - Brücke: 23s
-# - Farbfeld: -
+# - Farbfeld: 1m 38s
+# - Gesammt: -
 #
 #
 # Note to self: Batterie "12/19 Nr5" ist schlecht
