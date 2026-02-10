@@ -1,11 +1,11 @@
 #!/usr/bin/env pybricks-micropython
 
 # RGB color values
-WHITE = (23, 53, 39)
-BROWN = (2, 7, 1)
-BLUE = (2, 17, 17)
-BLUE_LINE_FOLLOW = (2, 17, 17) #(0,14,14)
-RED = (6, 3, 0)
+WHITE = (22, 52, 39)# (23, 53, 39) # 22 52 39
+BROWN = (2, 8, 1)# (2, 7, 1) # 2 8 1
+BLUE = (1, 15, 15)# (2, 17, 17) # 1 15 15
+BLUE_LINE_FOLLOW = (1, 15, 15) # (2, 17, 17) #(0,14,14)
+RED = (7, 4, 0) # (6, 3, 0) # 7 4 0
 
 # Bridge values
 RAMP_UP = 990
